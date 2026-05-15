@@ -508,16 +508,20 @@ function DesignFooter() {
 
 function RouteSummaryCard({ route, imageUrl, onOpen }: { route: MountainGuideRoute; imageUrl?: string; onOpen: () => void }) {
   const stops = buildRouteStops(route);
+  const routePanelStyle = {
+    backgroundColor: 'var(--route-color)',
+    backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.16), transparent 40%)'
+  } as CSSProperties;
 
   return (
     <li className={cn('grid min-h-[188px] grid-cols-[282px_minmax(0,1fr)_316px] overflow-hidden rounded-[5px] border border-[#d6d6d6] bg-white shadow-route max-[900px]:grid-cols-1', routeThemeClass[getRouteTheme(route)])}>
-      <div className="flex min-w-0 flex-col justify-center gap-[11px] bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_38%),var(--route-color)] px-5 py-[23px] text-white">
+      <div className="flex min-w-0 flex-col justify-center gap-[11px] px-5 py-[23px] text-white" style={routePanelStyle}>
         <span className="self-start rounded-[5px] bg-white px-2.5 py-1.5 text-sm font-black leading-[18px] text-[var(--route-color)]">{getRouteLabel(route)}</span>
         <div className="flex min-w-0 items-center gap-2.5">
-          <strong>{route.name}</strong>
+          <strong className="text-[28px] leading-[34px]">{route.name}</strong>
           <b className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-white/20 text-sm font-black text-white">{difficultyShortLabels[route.difficulty]}</b>
         </div>
-        <p>{getRouteSummary(route)}</p>
+        <p className="m-0 text-base font-bold leading-6">{getRouteSummary(route)}</p>
         <button className="mt-1 inline-flex min-h-[38px] items-center gap-2 self-start rounded-md border border-white/40 bg-white/10 px-3.5 text-sm font-black text-white [&_svg]:rotate-180" type="button" onClick={onOpen}>
           코스 상세보기
           <ArrowLeft size={16} />
@@ -712,7 +716,7 @@ function HeroInfoRow({ icon, label, value }: { icon: ReactNode; label: string; v
 
 function Metric({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="flex min-w-0 items-center gap-2 text-[#18221d] max-[900px]:min-h-11 max-[900px]:rounded-lg max-[900px]:border max-[900px]:border-[#276c8f]/15 max-[900px]:bg-[#f4f8f6] max-[900px]:px-3 max-[900px]:py-2 [&_svg]:flex-none [&_span]:text-base [&_span]:font-black [&_strong]:font-numeric [&_strong]:text-base [&_strong]:font-black">
+    <div className="flex min-w-0 flex-nowrap items-center gap-2 text-[#18221d] max-[900px]:min-h-11 max-[900px]:rounded-lg max-[900px]:border max-[900px]:border-[#276c8f]/15 max-[900px]:bg-[#f4f8f6] max-[900px]:px-3 max-[900px]:py-2 [&_svg]:flex-none [&_span]:whitespace-nowrap [&_span]:text-base [&_span]:font-black [&_strong]:font-numeric [&_strong]:text-base [&_strong]:font-black [&_strong]:leading-5">
       {icon}
       <span>{label}</span>
       <strong>{value}</strong>
@@ -724,21 +728,21 @@ function DifficultyGuide() {
   return (
     <section className="min-h-[216px] rounded-none border border-[#d9dee2] bg-white px-6 pb-5 pt-0 [&_h3]:mx-[-24px] [&_h3]:mb-[18px] [&_h3]:mt-0 [&_h3]:bg-[#f1f5f7] [&_h3]:px-6 [&_h3]:py-3.5 [&_h3]:text-lg [&_h3]:font-black [&_h3]:leading-[26px] [&_dd]:m-0 [&_dd]:text-sm [&_dd]:leading-6 [&_dt]:font-black" aria-label="코스 난이도 안내">
       <h3>코스 난이도 안내</h3>
-      <dl>
+      <dl className="grid gap-3 [&>div]:grid [&>div]:grid-cols-[44px_minmax(0,1fr)] [&>div]:items-center [&>div]:gap-3">
         <div>
-          <dt className="is-easy">하</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#e6f4e5] px-3 text-sm font-black text-[#237c18]">하</dt>
           <dd>초보자도 비교적 쉽게 오를 수 있는 코스</dd>
         </div>
         <div>
-          <dt className="is-normal">중</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#eef7e5] px-3 text-sm font-black text-[#4d8b20]">중</dt>
           <dd>기본 체력이 필요한 일반적인 산행 코스</dd>
         </div>
         <div>
-          <dt className="is-hard">상</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#fff0e1] px-3 text-sm font-black text-[#e10f07]">상</dt>
           <dd>경사, 거리, 암릉 등으로 경험이 필요한 코스</dd>
         </div>
         <div>
-          <dt className="is-unknown">확인</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#ffe9e9] px-3 text-sm font-black text-[#b71212]">확인</dt>
           <dd>자료가 부족해 방문 전 추가 확인이 필요한 코스</dd>
         </div>
       </dl>
