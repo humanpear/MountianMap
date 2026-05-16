@@ -23,7 +23,7 @@ export type MountainGuideSource = 'ai-draft' | 'curated';
 
 export type MountainGuideConfidence = 'low' | 'medium' | 'high';
 
-export type MountainGuideDifficulty = 'easy' | 'normal' | 'hard' | 'unknown';
+export type MountainGuideDifficulty = 'easy' | 'normal' | 'hard' | 'extreme' | 'unknown';
 
 export type MountainGuideCoordinate = {
   latitude: number;

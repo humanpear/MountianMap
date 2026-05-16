@@ -1,7 +1,9 @@
 import {
   ArrowLeft,
   Check,
+  CloudSun,
   Clock,
+  Droplets,
   ExternalLink,
   MapPin,
   MessageCircle,
@@ -10,7 +12,8 @@ import {
   Search,
   ShieldAlert,
   Sparkles,
-  Star
+  Star,
+  Wind
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { getMountainGuide } from '../data/mountainDetails';
@@ -19,7 +22,6 @@ import { isKakaoMapConfigured } from '../services/env';
 import { loadKakaoMaps } from '../services/kakaoLoader';
 import type {
   Mountain,
-  MountainGuideConfidence,
   MountainGuideDifficulty,
   MountainGuideLink,
   MountainGuideRoute,
@@ -37,22 +39,18 @@ type MountainDetailPageProps = {
 };
 
 const difficultyLabels: Record<MountainGuideDifficulty, string> = {
-  easy: '수월함',
-  normal: '보통',
-  hard: '어려움',
+  easy: '하',
+  normal: '중',
+  hard: '상',
+  extreme: '최상',
   unknown: '확인 필요'
-};
-
-const confidenceLabels: Record<MountainGuideConfidence, string> = {
-  low: '낮음',
-  medium: '보통',
-  high: '높음'
 };
 
 const difficultyShortLabels: Record<MountainGuideDifficulty, string> = {
   easy: '하',
   normal: '중',
   hard: '상',
+  extreme: '최상',
   unknown: '확인'
 };
 
@@ -75,6 +73,9 @@ function getRouteTheme(route: MountainGuideRoute) {
   if (route.difficulty === 'easy') {
     return 'easy';
   }
+  if (route.difficulty === 'extreme') {
+    return 'extreme';
+  }
   if (route.difficulty === 'hard') {
     return 'hard';
   }
@@ -94,65 +95,30 @@ function getRouteLabel(route: MountainGuideRoute) {
   if (route.difficulty === 'hard') {
     return '난이도 높은 코스';
   }
+  if (route.difficulty === 'extreme') {
+    return '숙련자용 고난도 코스';
+  }
   if (route.rank === 2) {
     return '경관 좋은 코스';
   }
   return `코스 ${route.rank}`;
 }
 
-const detailClass = {
-  page: 'min-h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink',
-  hero:
-    'relative min-h-[456px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0',
-  courseHero:
-    'relative min-h-[406px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0',
-  heroInner: 'relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8',
-  breadcrumb:
-    'flex min-h-8 items-center gap-2.5 text-sm font-extrabold text-white/85 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-1.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:font-black [&_button]:text-white',
-  heroContent:
-    'grid min-h-[384px] grid-cols-[minmax(0,1fr)_304px] items-end gap-[58px] pt-5 max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6 max-[900px]:pt-8',
-  courseHeroContent:
-    'grid min-h-[330px] grid-cols-[minmax(0,1fr)_312px] items-end gap-[58px] pt-[26px] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6',
-  elevation: 'mb-4 inline-flex min-h-[42px] items-center rounded-[5px] bg-[#00385d] px-3.5 text-[22px] font-black leading-none text-white shadow-heroPanel',
-  heroTitle: 'm-0 text-[78px] font-black leading-[0.96] text-white shadow-black [letter-spacing:0] [text-shadow:0_5px_18px_rgba(0,0,0,0.42)] max-[900px]:text-[clamp(44px,14vw,64px)]',
-  courseTitle: 'm-0 max-w-[780px] text-5xl font-black leading-[1.12] text-white [letter-spacing:0] max-[900px]:text-[clamp(34px,11vw,48px)]',
-  heroCopy: 'mt-[22px] max-w-[650px] text-lg font-extrabold leading-[31px] text-white/95',
-  facts: 'mt-[50px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5',
-  infoPanel:
-    'self-center rounded-[9px] border border-white/20 bg-[#0a0e12]/80 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-md [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white',
-  infoButton:
-    'mt-[17px] inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-sm border border-white/70 bg-black/10 px-3 text-[15px] font-extrabold text-white',
-  content: 'mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-0 pt-[30px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4',
-  sectionHeading:
-    'mb-[18px] flex items-center gap-[18px] max-[900px]:flex-col max-[900px]:items-start max-[900px]:gap-1.5 [&_h3]:m-0 [&_h3]:text-[28px] [&_h3]:font-black [&_h3]:leading-[34px] [&_span]:border-l [&_span]:border-[#d8e0da] [&_span]:pl-4 [&_span]:text-[15px] [&_span]:font-semibold [&_span]:text-[#777] max-[900px]:[&_span]:border-l-0 max-[900px]:[&_span]:pl-0',
-  routeList: 'grid gap-[17px]',
-  selectionReason: 'mb-[26px] [&_.eyebrow]:mb-2.5 [&_.eyebrow]:text-[22px] [&_.eyebrow]:font-black [&_.eyebrow]:leading-[30px] [&_.eyebrow]:text-[#111] [&_p:not(.eyebrow)]:text-base [&_p:not(.eyebrow)]:leading-7 [&_p:not(.eyebrow)]:text-[#444]',
-  supportGrid: 'mt-6 grid grid-cols-3 gap-5 max-[900px]:grid-cols-1',
-  bottomActions: 'mt-[22px] flex justify-end',
-  completeButton:
-    'inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d8e0da] bg-white px-4 font-extrabold text-[#18221d]',
-  completeButtonActive: 'border-[#1f8a5b] bg-[#1f8a5b] text-white',
-  courseTabs:
-    'mb-[22px] flex gap-[30px] border-b border-[#dedede] [&_button]:min-h-[54px] [&_button]:border-0 [&_button]:border-b-4 [&_button]:border-transparent [&_button]:bg-transparent [&_button]:px-6 [&_button]:text-[21px] [&_button]:font-black [&_button]:text-[#627168] [&_button.is-active]:border-b-[#e10f07] [&_button.is-active]:text-[#18221d]',
-  courseMapLayout: 'grid grid-cols-[minmax(0,760px)_minmax(310px,1fr)] gap-5 max-[900px]:grid-cols-1',
-  card: 'rounded-md border border-[#dedede] bg-white',
-  cardPadded: 'rounded-md border border-[#dedede] bg-white p-[22px]',
-  mapBox:
-    'min-h-[430px] overflow-hidden rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px]',
-  placeholder:
-    'grid min-h-[430px] place-items-center content-center gap-2.5 rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px] p-6 text-center text-[#18221d] [&_p]:m-0 [&_p]:max-w-[420px] [&_p]:text-[#627168] [&_p]:leading-7 [&_strong]:text-xl [&_svg]:text-[#e10f07]',
-  evaluationGrid: 'grid grid-cols-[1fr_1fr_1.05fr] gap-4 max-[900px]:grid-cols-1',
-  footer: 'mt-9 bg-mountain-navy text-white',
-  footerInner:
-    'mx-auto grid min-h-[76px] w-[1180px] max-w-[calc(100%-80px)] grid-cols-[minmax(230px,1.5fr)_repeat(4,minmax(110px,1fr))_minmax(90px,auto)] items-center gap-5 text-sm font-extrabold max-[900px]:w-full max-[900px]:max-w-none max-[900px]:grid-cols-1 max-[900px]:px-4 max-[900px]:py-5 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-2.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-white [&_strong]:inline-flex [&_strong]:items-center [&_strong]:gap-2.5 [&_strong]:text-[17px] [&_strong]:font-black'
+const routeThemeClass: Record<string, string> = {
+  recommended: '[--route-color:#c93629] [--route-panel:#d64032] [--route-soft:#fff2ee]',
+  balanced: '[--route-color:#d47a17] [--route-panel:#df841d] [--route-soft:#fff5e7]',
+  easy: '[--route-color:#4d8b37] [--route-panel:#3f7f2e] [--route-soft:#f0f8ec]',
+  forest: '[--route-color:#4d8b37] [--route-panel:#3f7f2e] [--route-soft:#f0f8ec]',
+  hard: '[--route-color:#b84a37] [--route-panel:#c5533f] [--route-soft:#fff0eb]',
+  extreme: '[--route-color:#9f3835] [--route-panel:#ad3f3b] [--route-soft:#fdebe9]'
 };
 
-const routeThemeClass: Record<string, string> = {
-  recommended: '[--route-color:#e10f07]',
-  balanced: '[--route-color:#f58600]',
-  easy: '[--route-color:#237c18]',
-  forest: '[--route-color:#237c18]',
-  hard: '[--route-color:#b71212]'
+const difficultyThemeClass: Record<MountainGuideDifficulty, string> = {
+  easy: 'border-[#bfdab4] bg-[#e7f3e4] text-[#4d8b37]',
+  normal: 'border-[#d7e4ba] bg-[#f0f7e4] text-[#6f9134]',
+  hard: 'border-[#f3c79e] bg-[#fff0de] text-[#c46422]',
+  extreme: 'border-[#efb9b4] bg-[#fde7e3] text-[#a83a34]',
+  unknown: 'border-[#cfd7dc] bg-[#eef2f4] text-[#65717a]'
 };
 
 function getRouteStops(path: string) {
@@ -230,7 +196,6 @@ export function MountainDetailPage({ mountain, isCompleted, onBack, onShowOnMap,
       routes={sortedRoutes}
       guideSource={guide.source}
       guideStatus={guide.status}
-      confidence={guide.confidence}
       selectionReason={guide.selectionReason ?? mountain.selectionReason}
       notes={guide.notes}
       photoLinks={guide.photoLinks ?? []}
@@ -249,7 +214,6 @@ function MountainMainDetailView({
   routes,
   guideSource,
   guideStatus,
-  confidence,
   selectionReason,
   notes,
   photoLinks,
@@ -264,7 +228,6 @@ function MountainMainDetailView({
   routes: MountainGuideRoute[];
   guideSource: MountainGuideSource;
   guideStatus: MountainGuideStatus;
-  confidence?: MountainGuideConfidence;
   selectionReason: string;
   notes?: string;
   photoLinks: MountainGuideLink[];
@@ -287,28 +250,28 @@ function MountainMainDetailView({
 
   return (
     <section
-      className={detailClass.page}
+      className="min-h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink"
       aria-label={`${mountain.name} 상세 정보`}
     >
-      <header className={detailClass.hero} style={heroStyle}>
+      <header className="relative min-h-[456px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0" style={heroStyle}>
         <div className="pointer-events-none absolute inset-0" />
-        <div className={detailClass.heroInner}>
-          <div className={detailClass.breadcrumb}>
+        <div className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8">
+          <div className="flex min-h-8 items-center gap-2.5 text-sm font-extrabold text-white/85 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-1.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:font-black [&_button]:text-white">
             <button type="button" onClick={onBack}>
               <ArrowLeft size={17} />
               지도
             </button>
           </div>
 
-          <div className={detailClass.heroContent}>
+          <div className="grid min-h-[384px] grid-cols-[minmax(0,1fr)_304px] items-end gap-[58px] pt-5 max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6 max-[900px]:pt-8">
             <div className="max-w-[760px]">
-              <span className={detailClass.elevation}>
+              <span className="mb-4 inline-flex min-h-[42px] items-center rounded-[5px] bg-[#00385d] px-3.5 text-[22px] font-black leading-none text-white shadow-heroPanel">
                 {mountain.elevationMeters.toLocaleString()}m
               </span>
-              <h2 className={detailClass.heroTitle}>{mountain.name}</h2>
+              <h2 className="m-0 text-[78px] font-black leading-[0.96] text-white shadow-black [letter-spacing:0] [text-shadow:0_5px_18px_rgba(0,0,0,0.42)] max-[900px]:text-[clamp(44px,14vw,64px)]">{mountain.name}</h2>
               
-              <p className={detailClass.heroCopy}>{selectionReason}</p>
-              <div className={detailClass.facts} aria-label="산 핵심 정보">
+              <p className="mt-[22px] max-w-[650px] text-lg font-extrabold leading-[31px] text-white/95">{selectionReason}</p>
+              <div className="mt-[50px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5" aria-label="산 핵심 정보">
                 <HeroFact icon={<MapPin size={18} />} label="위치" value={`${mountain.province} ${mountain.city}`} />
                 <HeroFact icon={<MountainIcon size={18} />} label="높이" value={`${mountain.elevationMeters.toLocaleString()}m`} />
                 <HeroFact icon={<Star size={18} />} label="선정" value="대한민국 100대 명산" />
@@ -316,7 +279,7 @@ function MountainMainDetailView({
               </div>
             </div>
 
-            <aside className={detailClass.infoPanel} aria-label="산 정보">
+            <aside className="self-center rounded-[9px] border border-white/25 bg-black/45 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-xl [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white" aria-label="산 정보">
               <h3>산 정보</h3>
               <dl>
                 <HeroInfoRow icon={<MapPin size={16} />} label="위치" value={`${mountain.province} ${mountain.city}`} />
@@ -326,7 +289,7 @@ function MountainMainDetailView({
                 <HeroInfoRow icon={<Sparkles size={16} />} label="자료" value={getGuideSourceLabel(guideSource)} />
                 <HeroInfoRow icon={<Check size={16} />} label="상태" value={getGuideStatusLabel(guideStatus, guideSource)} />
               </dl>
-              <button className={detailClass.infoButton} type="button" onClick={() => onShowOnMap(mountain)}>
+              <button className="mt-[17px] inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-sm border border-white/70 bg-black/10 px-3 text-[15px] font-extrabold text-white" type="button" onClick={() => onShowOnMap(mountain)}>
                 지도에서 보기
                 <MapPin size={17} />
               </button>
@@ -335,35 +298,30 @@ function MountainMainDetailView({
         </div>
       </header>
 
-      <main className={detailClass.content}>
-        <section className="route-showcase-section" aria-label="추천 코스">
-          <div className={detailClass.sectionHeading}>
+      <main className="mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-0 pt-[30px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4">
+        <section aria-label="추천 코스">
+          <div className="mb-[18px] flex items-center gap-[18px] max-[900px]:flex-col max-[900px]:items-start max-[900px]:gap-1.5 [&_h3]:m-0 [&_h3]:text-[28px] [&_h3]:font-black [&_h3]:leading-[34px] [&_span]:border-l [&_span]:border-[#d8e0da] [&_span]:pl-4 [&_span]:text-[15px] [&_span]:font-semibold [&_span]:text-[#777] max-[900px]:[&_span]:border-l-0 max-[900px]:[&_span]:pl-0">
             <h3>추천 코스</h3>
             <span>{mountain.name}의 대표 코스 정보를 확인하세요.</span>
           </div>
-          <ul className={detailClass.routeList}>
+          <ul className="grid gap-[17px]">
             {routes.map((route, index) => (
               <RouteSummaryCard key={route.name} route={route} imageUrl={getRouteImage(route, photoLinks, index)} onOpen={() => onRouteOpen(route)} />
             ))}
           </ul>
         </section>
 
-        <section className={detailClass.selectionReason} aria-label="100대 명산 선정 이유">
-          <p className="eyebrow">100대 명산 선정 이유</p>
-          <p>{selectionReason}</p>
-        </section>
-
-        <div className={detailClass.supportGrid}>
+        <div className="mt-6 grid grid-cols-3 gap-5 max-[900px]:grid-cols-1">
           <DifficultyGuide />
           <VisitWarnings routes={routes} notes={notes} />
-          <GuideStatusCard guideSource={guideSource} confidence={confidence} status={guideStatus} />
+          <WeatherStatusCard mountain={mountain} />
         </div>
 
         <PhotoGallery mountainName={mountain.name} links={photoLinks} />
         <SourceLinks links={verificationLinks} />
 
-        <div className={detailClass.bottomActions}>
-          <button className={cn(detailClass.completeButton, isCompleted && detailClass.completeButtonActive)} type="button" onClick={() => onToggleCompleted(mountain)}>
+        <div className="mt-[22px] flex justify-end">
+          <button className={cn('inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d8e0da] bg-white px-4 font-extrabold text-[#18221d]', isCompleted && 'border-[#1f8a5b] bg-[#1f8a5b] text-white')} type="button" onClick={() => onToggleCompleted(mountain)}>
             <Check size={18} />
             {isCompleted ? '등반완료 해제' : '등반완료'}
           </button>
@@ -400,26 +358,26 @@ function CourseDetailView({
 
   return (
     <section
-      className={detailClass.page}
+      className="min-h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink"
       aria-label={`${mountain.name} ${route.name} 상세 정보`}
     >
-      <header className={detailClass.courseHero} style={heroStyle}>
+      <header className="relative min-h-[406px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0" style={heroStyle}>
         <div className="pointer-events-none absolute inset-0" />
-        <div className={detailClass.heroInner}>
-          <nav className={detailClass.breadcrumb} aria-label="현재 위치">
+        <div className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8">
+          <nav className="flex min-h-8 items-center gap-2.5 text-sm font-extrabold text-white/85 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-1.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:font-black [&_button]:text-white" aria-label="현재 위치">
             <button type="button" onClick={onBackToMap}>홈</button>
             <span>추천 코스</span>
             <button type="button" onClick={onBackToMountain}>{mountain.name}</button>
             <strong>{route.name}</strong>
           </nav>
 
-          <div className={detailClass.courseHeroContent}>
+          <div className="grid min-h-[330px] grid-cols-[minmax(0,1fr)_312px] items-end gap-[58px] pt-[26px] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6">
             <div>
               <span className={cn('mb-[18px] inline-flex rounded-[5px] bg-white px-2.5 py-1.5 text-sm font-black leading-[18px]', routeThemeClass[getRouteTheme(route)], 'text-[var(--route-color)]')}>{getRouteLabel(route)}</span>
-              <h2 className={detailClass.courseTitle}>{mountain.name} {route.name}</h2>
-              <p className={cn(detailClass.heroCopy, 'mt-3')}>{getRouteSummary(route)}</p>
+              <h2 className="m-0 max-w-[780px] text-5xl font-black leading-[1.12] text-white [letter-spacing:0] max-[900px]:text-[clamp(34px,11vw,48px)]">{mountain.name} {route.name}</h2>
+              <p className="mt-3 max-w-[650px] text-lg font-extrabold leading-[31px] text-white/95">{getRouteSummary(route)}</p>
               <p className="mt-5 max-w-[650px] text-base font-bold leading-7 text-white/95">{route.summary ?? route.recommendationReason ?? `${route.name}의 주요 경유지와 접근 정보를 확인하세요.`}</p>
-              <div className={detailClass.facts}>
+              <div className="mt-[50px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5">
                 <HeroFact icon={<Route size={19} />} label="거리" value={route.distance} />
                 <HeroFact icon={<Clock size={19} />} label="소요시간" value={route.estimatedTime} />
                 <HeroFact icon={<MountainIcon size={19} />} label="누적 고도" value={route.elevationGain ?? '확인 필요'} />
@@ -427,7 +385,7 @@ function CourseDetailView({
               </div>
             </div>
 
-            <aside className={detailClass.infoPanel} aria-label="코스 정보 요약">
+            <aside className="self-center rounded-[9px] border border-white/25 bg-black/45 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-xl [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white" aria-label="코스 정보 요약">
               <h3>코스 정보 요약</h3>
               <dl>
                 <HeroInfoRow icon={<MapPin size={16} />} label="출발지" value={stops[0]?.name ?? route.startPoint} />
@@ -443,23 +401,23 @@ function CourseDetailView({
         </div>
       </header>
 
-      <main className={detailClass.content}>
-        <div className={detailClass.courseTabs} role="tablist" aria-label="코스 상세 탭">
+      <main className="mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-0 pt-[30px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4">
+        <div className="mb-[22px] flex gap-[30px] border-b border-[#dedede] [&_button]:min-h-[54px] [&_button]:border-0 [&_button]:border-b-4 [&_button]:border-transparent [&_button]:bg-transparent [&_button]:px-6 [&_button]:text-[21px] [&_button]:font-black [&_button]:text-[#627168] [&_button.is-active]:border-b-[#e10f07] [&_button.is-active]:text-[#18221d]" role="tablist" aria-label="코스 상세 탭">
           <button className="is-active" type="button">코스 개요</button>
           <button type="button">포토 갤러리</button>
         </div>
 
-        <section className={detailClass.courseMapLayout} aria-label="코스 지도와 타임라인">
-          <div className={detailClass.cardPadded}>
+        <section className="grid grid-cols-[minmax(0,760px)_minmax(310px,1fr)] gap-5 max-[900px]:grid-cols-1" aria-label="코스 지도와 타임라인">
+          <div className="rounded-md border border-[#dedede] bg-white p-[22px]">
             <h3>코스 지도</h3>
             <KakaoRouteMap route={route} />
           </div>
           <CourseTimelinePanel stops={stops} route={route} />
         </section>
 
-        <section className={cn(detailClass.cardPadded, 'mt-6')} aria-label={`${route.name} 코스 평가`}>
+        <section className="mt-6 rounded-md border border-[#dedede] bg-white p-[22px]" aria-label={`${route.name} 코스 평가`}>
           <h3>{mountain.name} {route.name} 평가</h3>
-          <div className={detailClass.evaluationGrid}>
+          <div className="grid grid-cols-[1fr_1fr_1.05fr] gap-4 max-[900px]:grid-cols-1">
             <EvaluationPicker title="난이도는 어떠셨나요?" options={['쉬움', '보통', '약간 어려움', '어려움', '매우 어려움']} activeIndex={3} icon="mountain" />
             <EvaluationPicker title="소요시간은 어떠셨나요?" options={['2시간 이하', '2~3시간', '3~4시간', '4~5시간', '5시간 이상']} activeIndex={3} icon="clock" />
             <div className="grid min-w-0 rounded-lg border border-[#d8e0da] bg-white p-5 [&>strong]:mb-4 [&>strong]:block [&>strong]:text-center [&_button]:mt-3 [&_button]:min-h-12 [&_button]:rounded-lg [&_button]:border-0 [&_button]:bg-[#e10f07] [&_button]:font-black [&_button]:text-white [&_button:disabled]:opacity-60 [&_span]:mt-1.5 [&_span]:justify-self-end [&_span]:text-xs [&_span]:text-[#627168] [&_textarea]:min-h-28 [&_textarea]:w-full [&_textarea]:resize-y [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-[#d8e0da] [&_textarea]:p-3">
@@ -471,7 +429,7 @@ function CourseDetailView({
           </div>
         </section>
 
-        <section className={cn(detailClass.cardPadded, 'mt-6')} aria-label="다른 등산객들의 한줄평">
+        <section className="mt-6 rounded-md border border-[#dedede] bg-white p-[22px]" aria-label="다른 등산객들의 한줄평">
           <h3>다른 등산객들의 한줄평</h3>
           <div className="flex items-center gap-3 rounded-md border border-[#dedede] bg-white p-4 text-[#627168] [&_p]:m-0 [&_p]:leading-6">
             <MessageCircle size={20} />
@@ -488,8 +446,8 @@ function CourseDetailView({
 
 function DesignFooter() {
   return (
-    <footer className={detailClass.footer} aria-label="하단 메뉴">
-      <div className={detailClass.footerInner}>
+    <footer className="mt-9 bg-mountain-navy text-white" aria-label="하단 메뉴">
+      <div className="mx-auto grid min-h-[76px] w-[1180px] max-w-[calc(100%-80px)] grid-cols-[minmax(230px,1.5fr)_repeat(4,minmax(110px,1fr))_minmax(90px,auto)] items-center gap-5 text-sm font-extrabold max-[900px]:w-full max-[900px]:max-w-none max-[900px]:grid-cols-1 max-[900px]:px-4 max-[900px]:py-5 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-2.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-white [&_strong]:inline-flex [&_strong]:items-center [&_strong]:gap-2.5 [&_strong]:text-[17px] [&_strong]:font-black">
         <strong>
           <MountainIcon size={26} />
           대한민국 100대 명산
@@ -509,8 +467,8 @@ function DesignFooter() {
 function RouteSummaryCard({ route, imageUrl, onOpen }: { route: MountainGuideRoute; imageUrl?: string; onOpen: () => void }) {
   const stops = buildRouteStops(route);
   const routePanelStyle = {
-    backgroundColor: 'var(--route-color)',
-    backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.16), transparent 40%)'
+    backgroundColor: 'var(--route-panel)',
+    backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.18), transparent 46%)'
   } as CSSProperties;
 
   return (
@@ -519,7 +477,7 @@ function RouteSummaryCard({ route, imageUrl, onOpen }: { route: MountainGuideRou
         <span className="self-start rounded-[5px] bg-white px-2.5 py-1.5 text-sm font-black leading-[18px] text-[var(--route-color)]">{getRouteLabel(route)}</span>
         <div className="flex min-w-0 items-center gap-2.5">
           <strong className="text-[28px] leading-[34px]">{route.name}</strong>
-          <b className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-white/20 text-sm font-black text-white">{difficultyShortLabels[route.difficulty]}</b>
+          <DifficultyBadge difficulty={route.difficulty} />
         </div>
         <p className="m-0 text-base font-bold leading-6">{getRouteSummary(route)}</p>
         <button className="mt-1 inline-flex min-h-[38px] items-center gap-2 self-start rounded-md border border-white/40 bg-white/10 px-3.5 text-sm font-black text-white [&_svg]:rotate-180" type="button" onClick={onOpen}>
@@ -527,19 +485,19 @@ function RouteSummaryCard({ route, imageUrl, onOpen }: { route: MountainGuideRou
           <ArrowLeft size={16} />
         </button>
       </div>
-      <div className="grid min-w-0 content-center gap-6 overflow-hidden bg-[linear-gradient(90deg,#fff,#fbfcfb)] px-7 py-[26px] max-[900px]:p-5">
+      <div className="grid min-w-0 content-center gap-6 overflow-hidden bg-[linear-gradient(90deg,var(--route-soft),rgba(255,255,255,0.72))] px-7 py-[26px] max-[900px]:p-5">
         <div className="grid grid-cols-3 gap-5 max-[900px]:grid-cols-1">
           <Metric icon={<Route size={17} />} label="거리" value={route.distance} />
           <Metric icon={<Clock size={17} />} label="소요시간" value={route.estimatedTime} />
-          <Metric icon={<ShieldAlert size={17} />} label="난이도" value={difficultyShortLabels[route.difficulty]} />
+          <DifficultyMetric difficulty={route.difficulty} />
         </div>
         <RouteTimeline stops={stops} rawPath={route.path} />
       </div>
-      <figure className="m-0 block min-w-0 bg-[#f7f7f7] p-2.5">
+      <figure className="m-0 block min-w-0 bg-[var(--route-soft)] p-2.5">
         {imageUrl ? (
           <img className="block h-full min-h-[164px] w-full rounded-[5px] object-cover" src={imageUrl} alt={`${route.name} 참고 사진`} loading="lazy" />
         ) : (
-          <div className="grid h-full min-h-[164px] place-items-center rounded-[5px] bg-[#edf3e8] text-center" aria-hidden="true">
+          <div className="grid h-full min-h-[164px] place-items-center rounded-[5px] bg-[var(--route-soft)] text-center" aria-hidden="true">
             <span />
             <strong>{route.name}</strong>
           </div>
@@ -610,7 +568,7 @@ function KakaoRouteMap({ route }: { route: MountainGuideRoute }) {
 
   if (!route.mapPathCoordinates || route.mapPathCoordinates.length < 2) {
     return (
-      <div className={detailClass.placeholder}>
+      <div className="grid min-h-[430px] place-items-center content-center gap-2.5 rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px] p-6 text-center text-[#18221d] [&_p]:m-0 [&_p]:max-w-[420px] [&_p]:text-[#627168] [&_p]:leading-7 [&_strong]:text-xl [&_svg]:text-[#e10f07]">
         <Search size={24} />
         <strong>경로 좌표 준비 중</strong>
         <p>사용자가 입력한 위도/경도 좌표가 추가되면 카카오맵에 코스 동선이 표시됩니다.</p>
@@ -620,7 +578,7 @@ function KakaoRouteMap({ route }: { route: MountainGuideRoute }) {
 
   if (mapError) {
     return (
-      <div className={detailClass.placeholder}>
+      <div className="grid min-h-[430px] place-items-center content-center gap-2.5 rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px] p-6 text-center text-[#18221d] [&_p]:m-0 [&_p]:max-w-[420px] [&_p]:text-[#627168] [&_p]:leading-7 [&_strong]:text-xl [&_svg]:text-[#e10f07]">
         <ShieldAlert size={24} />
         <strong>지도 표시 실패</strong>
         <p>{mapError}</p>
@@ -628,7 +586,7 @@ function KakaoRouteMap({ route }: { route: MountainGuideRoute }) {
     );
   }
 
-  return <div ref={containerRef} className={detailClass.mapBox} aria-label={`${route.name} 카카오맵 경로`} />;
+  return <div ref={containerRef} className="min-h-[430px] overflow-hidden rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px]" aria-label={`${route.name} 카카오맵 경로`} />;
 }
 
 function RouteTimeline({ stops, rawPath }: { stops: MountainGuideRouteStop[]; rawPath: string }) {
@@ -637,7 +595,7 @@ function RouteTimeline({ stops, rawPath }: { stops: MountainGuideRouteStop[]; ra
       <strong className="sr-only">코스</strong>
       {stops.length > 1 ? (
         <>
-          <ol className="relative m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(84px,1fr))] p-0 before:absolute before:left-[8%] before:right-[8%] before:top-2 before:h-0.5 before:bg-[var(--route-color)] before:content-['']" aria-label="코스 경유지">
+          <ol className="relative m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(84px,1fr))] p-0 before:absolute before:left-[8%] before:right-[8%] before:top-[6px] before:h-0.5 before:bg-[var(--route-color)] before:content-['']" aria-label="코스 경유지">
             {stops.slice(0, 5).map((stop, index) => (
               <li className="relative min-w-0 px-2 text-center" key={`${stop.name}-${index}`}>
                 <span className="relative z-[1] mx-auto mb-3 block h-3 w-3 rounded-full border-2 border-white bg-[var(--route-color)] shadow-[0_0_0_2px_var(--route-color)]" />
@@ -658,7 +616,7 @@ function CourseTimelinePanel({ stops, route }: { stops: MountainGuideRouteStop[]
   const displayStops = stops.length ? stops : buildRouteStops(route);
 
   return (
-    <aside className={cn(detailClass.card, 'px-6 py-[26px]')} aria-label="코스 한눈에 보기">
+    <aside className="rounded-md border border-[#dedede] bg-white px-6 py-[26px]" aria-label="코스 한눈에 보기">
       <h3>코스 한눈에 보기</h3>
       <ol className="relative m-0 grid list-none gap-0 pl-[22px] before:absolute before:bottom-2.5 before:left-[7px] before:top-2.5 before:w-[3px] before:bg-[#a9adb0] before:content-['']">
         {displayStops.map((stop, index) => (
@@ -724,26 +682,46 @@ function Metric({ icon, label, value }: { icon: ReactNode; label: string; value:
   );
 }
 
+function DifficultyBadge({ difficulty }: { difficulty: MountainGuideDifficulty }) {
+  return (
+    <b className={cn('inline-flex min-h-7 min-w-7 flex-none items-center justify-center rounded-full border px-2 text-sm font-black', difficultyThemeClass[difficulty])}>
+      {difficultyShortLabels[difficulty]}
+    </b>
+  );
+}
+
+function DifficultyMetric({ difficulty }: { difficulty: MountainGuideDifficulty }) {
+  return (
+    <div className="flex min-w-0 flex-nowrap items-center gap-2 text-[#18221d] max-[900px]:min-h-11 max-[900px]:rounded-lg max-[900px]:border max-[900px]:border-[#276c8f]/15 max-[900px]:bg-[#f4f8f6] max-[900px]:px-3 max-[900px]:py-2 [&_svg]:flex-none [&_span]:whitespace-nowrap [&_span]:text-base [&_span]:font-black">
+      <ShieldAlert size={17} />
+      <span>난이도</span>
+      <strong className={cn('inline-flex min-h-7 items-center rounded-full border px-2.5 text-sm font-black leading-none', difficultyThemeClass[difficulty])}>
+        {difficultyShortLabels[difficulty]}
+      </strong>
+    </div>
+  );
+}
+
 function DifficultyGuide() {
   return (
     <section className="min-h-[216px] rounded-none border border-[#d9dee2] bg-white px-6 pb-5 pt-0 [&_h3]:mx-[-24px] [&_h3]:mb-[18px] [&_h3]:mt-0 [&_h3]:bg-[#f1f5f7] [&_h3]:px-6 [&_h3]:py-3.5 [&_h3]:text-lg [&_h3]:font-black [&_h3]:leading-[26px] [&_dd]:m-0 [&_dd]:text-sm [&_dd]:leading-6 [&_dt]:font-black" aria-label="코스 난이도 안내">
       <h3>코스 난이도 안내</h3>
       <dl className="grid gap-3 [&>div]:grid [&>div]:grid-cols-[44px_minmax(0,1fr)] [&>div]:items-center [&>div]:gap-3">
         <div>
-          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#e6f4e5] px-3 text-sm font-black text-[#237c18]">하</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full border border-[#bfdab4] bg-[#e7f3e4] px-3 text-sm font-black text-[#4d8b37]">하</dt>
           <dd>초보자도 비교적 쉽게 오를 수 있는 코스</dd>
         </div>
         <div>
-          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#eef7e5] px-3 text-sm font-black text-[#4d8b20]">중</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full border border-[#d7e4ba] bg-[#f0f7e4] px-3 text-sm font-black text-[#6f9134]">중</dt>
           <dd>기본 체력이 필요한 일반적인 산행 코스</dd>
         </div>
         <div>
-          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#fff0e1] px-3 text-sm font-black text-[#e10f07]">상</dt>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full border border-[#f3c79e] bg-[#fff0de] px-3 text-sm font-black text-[#c46422]">상</dt>
           <dd>경사, 거리, 암릉 등으로 경험이 필요한 코스</dd>
         </div>
         <div>
-          <dt className="inline-flex min-h-7 items-center justify-center rounded-full bg-[#ffe9e9] px-3 text-sm font-black text-[#b71212]">확인</dt>
-          <dd>자료가 부족해 방문 전 추가 확인이 필요한 코스</dd>
+          <dt className="inline-flex min-h-7 items-center justify-center rounded-full border border-[#efb9b4] bg-[#fde7e3] px-3 text-sm font-black text-[#a83a34]">최상</dt>
+          <dd>숙련자에게 적합한 고난도 코스</dd>
         </div>
       </dl>
     </section>
@@ -769,30 +747,41 @@ function VisitWarnings({ routes, notes }: { routes: MountainGuideRoute[]; notes?
   );
 }
 
-function GuideStatusCard({
-  guideSource,
-  confidence,
-  status
-}: {
-  guideSource: MountainGuideSource;
-  confidence?: MountainGuideConfidence;
-  status: MountainGuideStatus;
-}) {
+function WeatherStatusCard({ mountain }: { mountain: Mountain }) {
   return (
-    <section className="min-h-[216px] rounded-none border border-[#00385d] bg-[#00385d] px-6 pb-5 pt-0 text-white [&_h3]:mx-[-24px] [&_h3]:mb-[18px] [&_h3]:mt-0 [&_h3]:bg-transparent [&_h3]:px-6 [&_h3]:py-3.5 [&_h3]:text-lg [&_h3]:font-black [&_h3]:leading-[26px] [&_dd]:m-0 [&_dd]:text-white/90 [&_dt]:text-white/90" aria-label="정보 상태">
-      <h3>정보 상태</h3>
-      <dl className="grid gap-3">
+    <section className="min-h-[216px] rounded-none border border-[#00385d] bg-[radial-gradient(circle_at_82%_18%,rgba(255,255,255,0.22),transparent_30%),linear-gradient(135deg,#00385d,#075073)] px-6 pb-5 pt-0 text-white [&_h3]:mx-[-24px] [&_h3]:mb-[14px] [&_h3]:mt-0 [&_h3]:bg-transparent [&_h3]:px-6 [&_h3]:py-3.5 [&_h3]:text-lg [&_h3]:font-black [&_h3]:leading-[26px]" aria-label={`${mountain.name} 날씨`}>
+      <div className="mx-[-24px] mb-3 flex items-center justify-between gap-3 px-6 py-3.5">
+        <h3 className="!m-0 !p-0">오늘의 {mountain.name} 날씨</h3>
+        <span className="text-xs font-bold text-white/80">예보 API 연결 예정</span>
+      </div>
+      <div className="mb-4 flex items-center gap-5">
+        <CloudSun className="h-16 w-16 text-white/90" strokeWidth={1.6} />
         <div>
-          <dt>출처</dt>
-          <dd>{getGuideSourceLabel(guideSource)}</dd>
+          <strong className="block text-[42px] font-black leading-none">--°C</strong>
+          <p className="m-0 mt-1 text-sm font-bold text-white/85">{mountain.province} {mountain.city} 일대 예보 대기</p>
+        </div>
+      </div>
+      <dl className="grid grid-cols-3 gap-2 text-center">
+        <div>
+          <dt className="mb-1 flex items-center justify-center gap-1 text-xs font-bold text-white/75">
+            <CloudSun size={14} />
+            체감
+          </dt>
+          <dd className="m-0 text-sm font-black text-white">--°C</dd>
         </div>
         <div>
-          <dt>검증</dt>
-          <dd>{status === 'verified' ? '검증됨' : '미검증 초안'}</dd>
+          <dt className="mb-1 flex items-center justify-center gap-1 text-xs font-bold text-white/75">
+            <Droplets size={14} />
+            습도
+          </dt>
+          <dd className="m-0 text-sm font-black text-white">--%</dd>
         </div>
         <div>
-          <dt>신뢰도</dt>
-          <dd>{confidence ? confidenceLabels[confidence] : '확인 필요'}</dd>
+          <dt className="mb-1 flex items-center justify-center gap-1 text-xs font-bold text-white/75">
+            <Wind size={14} />
+            풍속
+          </dt>
+          <dd className="m-0 text-sm font-black text-white">--m/s</dd>
         </div>
       </dl>
     </section>
