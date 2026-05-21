@@ -4,6 +4,7 @@ import { Check, MapPin, Mountain as MountainIcon, Search, Shuffle, X } from 'luc
 import { GarisanApiProbePage } from './components/GarisanApiProbePage';
 import { MountainDetailPage } from './components/MountainDetailPage';
 import { MountainMap } from './components/MountainMap';
+import { MountainNameWithHanja } from './components/MountainNameWithHanja';
 import { mountains } from './data/mountains';
 import { getMountainGuide } from './data/mountainDetails';
 import { getRandomCandidates, pickRandomMountain } from './game/random';
@@ -315,7 +316,7 @@ export default function App() {
     <main className={appClass.shell}>
       <header className={appClass.topbar}>
         <button className={appClass.brand} type="button" onClick={() => setDetailMountainId(null)} aria-label="지도로 이동">
-          <MountainIcon size={34} />
+          <img className="h-9 w-auto object-contain brightness-0 invert" src="/logo-mountain.png" alt="" aria-hidden="true" />
           <span>대한민국 100대 명산</span>
         </button>
         <form
@@ -416,7 +417,13 @@ export default function App() {
                 <div className={appClass.detailHeader}>
                   <div>
                     <p className={appClass.eyebrow}>{selectedMountain.province}</p>
-                    <h2 className="m-0 text-2xl font-extrabold leading-tight">{selectedMountain.name}</h2>
+                    <h2 className="m-0 text-2xl font-extrabold leading-tight">
+                      <MountainNameWithHanja
+                        mountain={selectedMountain}
+                        className="flex-wrap"
+                        hanjaClassName="text-base text-[#627168]"
+                      />
+                    </h2>
                   </div>
                   <button
                     className={cn(appClass.completeButton, completedIds.has(selectedMountain.id) && appClass.completeButtonActive)}
@@ -500,7 +507,11 @@ export default function App() {
             </button>
             <p className={appClass.eyebrow}>랜덤 당첨</p>
             <h2 id="result-modal-title" className="m-0 text-3xl font-black">
-              {resultModalMountain.name}
+              <MountainNameWithHanja
+                mountain={resultModalMountain}
+                className="flex-wrap"
+                hanjaClassName="text-xl text-[#627168]"
+              />
             </h2>
             <dl className={appClass.resultMeta}>
               <div>

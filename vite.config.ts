@@ -23,6 +23,12 @@ export default defineConfig(({ mode }) => {
 
             return `${pathname}?${params.toString()}`;
           }
+        },
+        '/api/mtweather': {
+          target: 'https://mtweather.nifos.go.kr',
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api\/mtweather/, '/famous/mountainOne')
         }
       }
     },
