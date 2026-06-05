@@ -1,18 +1,16 @@
-import {
+﻿import {
   ArrowLeft,
   Check,
   CloudSun,
   Clock,
   Droplets,
   ExternalLink,
+  Heart,
   MapPin,
   MessageCircle,
   Mountain as MountainIcon,
   Route,
-  Search,
   ShieldAlert,
-  Sparkles,
-  Star,
   Wind,
 } from "lucide-react";
 import {
@@ -22,12 +20,11 @@ import {
   useState,
   type CSSProperties,
   type ReactNode,
+  type SyntheticEvent,
 } from "react";
 import { getMountainGuide } from "../data/mountainDetails";
 import { cn } from "../lib/classNames";
 import { MountainNameWithHanja } from "./MountainNameWithHanja";
-import { isKakaoMapConfigured } from "../services/env";
-import { loadKakaoMaps } from "../services/kakaoLoader";
 import {
   fetchMountainWeather,
   getMountainWeatherPageUrl,
@@ -37,6 +34,7 @@ import {
 import type {
   Mountain,
   MountainGuideDifficulty,
+  MountainGuideImage,
   MountainGuideLink,
   MountainGuideRoute,
   MountainGuideRouteStop,
@@ -51,6 +49,51 @@ type MountainDetailPageProps = {
   onShowOnMap: (mountain: Mountain) => void;
   onToggleCompleted: (mountain: Mountain) => void;
 };
+
+type CourseDetailTab = "overview" | "gallery";
+
+type CourseReview = {
+  id: string;
+  nickname: string;
+  createdAt: string;
+  difficulty: string;
+  duration: string;
+  body: string;
+  likes: number;
+  comments: number;
+};
+
+type ScrollHeroState = {
+  progress: number;
+  height: number;
+  stickyOffset: number;
+  imageBrightness: number;
+  imageOpacity: number;
+  contentOffset: number;
+};
+
+const initialScrollHeroState: ScrollHeroState = {
+  progress: 0,
+  height: 600,
+  stickyOffset: 0,
+  imageBrightness: 1,
+  imageOpacity: 1,
+  contentOffset: 0,
+};
+
+function clampNumber(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+const defaultHeroImageRatio = 9 / 16;
+
+function getExpandedHeroHeight(imageRatio = defaultHeroImageRatio) {
+  if (typeof window === "undefined") {
+    return initialScrollHeroState.height;
+  }
+
+  return clampNumber(window.innerWidth * imageRatio, 520, 860);
+}
 
 const difficultyLabels: Record<MountainGuideDifficulty, string> = {
   easy: "하",
@@ -84,8 +127,17 @@ function getGuideSourceLabel(source: MountainGuideSource) {
 }
 
 function getRouteTheme(route: MountainGuideRoute) {
-  if (route.isRecommended) {
+  if (route.isRecommended || route.rank === 1) {
     return "recommended";
+  }
+  if (route.rank === 2) {
+    return "balanced";
+  }
+  if (route.rank === 3) {
+    return "forest";
+  }
+  if (route.rank >= 90) {
+    return "easy";
   }
   if (route.difficulty === "easy") {
     return "easy";
@@ -95,9 +147,6 @@ function getRouteTheme(route: MountainGuideRoute) {
   }
   if (route.difficulty === "hard") {
     return "hard";
-  }
-  if (route.rank === 2) {
-    return "balanced";
   }
   return "forest";
 }
@@ -140,6 +189,30 @@ const difficultyThemeClass: Record<MountainGuideDifficulty, string> = {
   hard: "border-[#f3c79e] bg-[#fff0de] text-[#c46422]",
   extreme: "border-[#efb9b4] bg-[#fde7e3] text-[#a83a34]",
   unknown: "border-[#cfd7dc] bg-[#eef2f4] text-[#65717a]",
+};
+
+const difficultyEvaluationOptions = [
+  "쉬움",
+  "보통",
+  "약간 어려움",
+  "어려움",
+  "매우 어려움",
+];
+
+const durationEvaluationOptions = [
+  "2시간 이하",
+  "2~3시간",
+  "3~4시간",
+  "4~5시간",
+  "5시간 이상",
+];
+
+const difficultyDefaultIndex: Record<MountainGuideDifficulty, number> = {
+  easy: 0,
+  normal: 1,
+  hard: 3,
+  extreme: 4,
+  unknown: 2,
 };
 
 function getRouteStops(path: string) {
@@ -222,8 +295,8 @@ function getRouteImage(
   if (route.heroImageUrl) {
     return route.heroImageUrl;
   }
-  if (route.coursePhotos?.[0]?.url) {
-    return route.coursePhotos[0].url;
+  if (route.courseMapImage?.src) {
+    return route.courseMapImage.src;
   }
   return guidePhotos[index % Math.max(guidePhotos.length, 1)]?.url;
 }
@@ -231,11 +304,88 @@ function getRouteImage(
 function getHeroImage(
   route: MountainGuideRoute | undefined,
   guidePhotos: MountainGuideLink[],
+  guideHeroImage?: MountainGuideImage,
 ) {
   if (route) {
     return getRouteImage(route, guidePhotos);
   }
-  return guidePhotos[0]?.url;
+  return guideHeroImage?.src ?? guidePhotos[0]?.url;
+}
+
+export function getMountainMainHeroImage(
+  mountainId: string,
+  guideHeroImage?: MountainGuideImage,
+) {
+  return guideHeroImage?.src ?? `/mountain-images/${mountainId}/hero.png`;
+}
+
+function getCourseReviewStorageKey(mountainId: string, routeName: string) {
+  return `mountain-map:course-reviews:${mountainId}:${routeName}`;
+}
+
+function getDefaultDurationIndex(estimatedTime: string) {
+  const hourMatch = estimatedTime.match(/(\d+(?:\.\d+)?)/);
+  const hours = hourMatch ? Number(hourMatch[1]) : Number.NaN;
+
+  if (!Number.isFinite(hours)) {
+    return 2;
+  }
+  if (hours <= 2) {
+    return 0;
+  }
+  if (hours <= 3) {
+    return 1;
+  }
+  if (hours <= 4) {
+    return 2;
+  }
+  if (hours <= 5) {
+    return 3;
+  }
+  return 4;
+}
+
+function parseStoredReviews(value: string | null): CourseReview[] {
+  if (!value) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed.filter((review): review is CourseReview => {
+      return (
+        typeof review?.id === "string" &&
+        typeof review.nickname === "string" &&
+        typeof review.createdAt === "string" &&
+        typeof review.difficulty === "string" &&
+        typeof review.duration === "string" &&
+        typeof review.body === "string" &&
+        typeof review.likes === "number" &&
+        typeof review.comments === "number"
+      );
+    });
+  } catch {
+    return [];
+  }
+}
+
+function formatReviewDate(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date
+    .toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\s/g, "");
 }
 
 export function MountainDetailPage({
@@ -283,6 +433,7 @@ export function MountainDetailPage({
       guideStatus={guide.status}
       selectionReason={guide.selectionReason ?? mountain.selectionReason}
       notes={guide.notes}
+      heroImage={guide.heroImage}
       photoLinks={guide.photoLinks ?? []}
       verificationLinks={guide.verificationLinks ?? []}
       isCompleted={isCompleted}
@@ -301,6 +452,7 @@ function MountainMainDetailView({
   guideStatus,
   selectionReason,
   notes,
+  heroImage: guideHeroImage,
   photoLinks,
   verificationLinks,
   isCompleted,
@@ -315,6 +467,7 @@ function MountainMainDetailView({
   guideStatus: MountainGuideStatus;
   selectionReason: string;
   notes?: string;
+  heroImage?: MountainGuideImage;
   photoLinks: MountainGuideLink[];
   verificationLinks: MountainGuideLink[];
   isCompleted: boolean;
@@ -323,54 +476,176 @@ function MountainMainDetailView({
   onToggleCompleted: (mountain: Mountain) => void;
   onRouteOpen: (route: MountainGuideRoute) => void;
 }) {
-  const heroImage = getHeroImage(undefined, photoLinks);
-  const heroStyle = heroImage
-    ? ({
-        backgroundImage: `linear-gradient(90deg, rgba(0, 14, 23, 0.76) 0%, rgba(0, 14, 23, 0.46) 42%, rgba(0, 14, 23, 0.12) 100%), linear-gradient(0deg, rgba(0, 14, 23, 0.5) 0%, rgba(0, 14, 23, 0.04) 54%, rgba(0, 14, 23, 0.2) 100%), url("${heroImage}")`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      } as CSSProperties)
-    : undefined;
+  const heroImage = getMountainMainHeroImage(mountain.id, guideHeroImage);
   const recommendedRoute = routes[0];
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const heroContentRef = useRef<HTMLDivElement | null>(null);
+  const [heroImageRatio, setHeroImageRatio] = useState(defaultHeroImageRatio);
+  const [heroState, setHeroState] = useState<ScrollHeroState>(() => ({
+    ...initialScrollHeroState,
+    height: getExpandedHeroHeight(defaultHeroImageRatio),
+  }));
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) {
+      return;
+    }
+
+    let animationFrameId = 0;
+
+    const updateHeroState = () => {
+      animationFrameId = 0;
+
+      const expandedHeight = getExpandedHeroHeight(heroImageRatio);
+      const measuredContentHeight =
+        heroContentRef.current?.offsetHeight ?? 384;
+      const collapsedHeight = Math.min(
+        expandedHeight,
+        Math.max(360, measuredContentHeight + 64),
+      );
+      const collapseDistance = Math.max(1, expandedHeight - collapsedHeight);
+      const scrollTop =
+        section.scrollTop > 0 ? section.scrollTop : window.scrollY;
+      const progress = clampNumber(scrollTop / collapseDistance, 0, 1);
+      const nextHeight =
+        expandedHeight - (expandedHeight - collapsedHeight) * progress;
+      const nextState: ScrollHeroState = {
+        progress,
+        height: nextHeight,
+        stickyOffset: Math.min(scrollTop, collapseDistance),
+        imageBrightness: 1 - 0.45 * progress,
+        imageOpacity: 1 - 0.28 * progress,
+        contentOffset: 0,
+      };
+
+      setHeroState((currentState) => {
+        const hasMeaningfulChange =
+          Math.abs(currentState.progress - nextState.progress) > 0.002 ||
+          Math.abs(currentState.height - nextState.height) > 0.5 ||
+          Math.abs(currentState.stickyOffset - nextState.stickyOffset) > 0.5 ||
+          Math.abs(currentState.imageBrightness - nextState.imageBrightness) >
+            0.002 ||
+          Math.abs(currentState.imageOpacity - nextState.imageOpacity) >
+            0.002 ||
+          Math.abs(currentState.contentOffset - nextState.contentOffset) > 0.5;
+
+        return hasMeaningfulChange ? nextState : currentState;
+      });
+    };
+
+    const scheduleHeroUpdate = () => {
+      if (animationFrameId === 0) {
+        animationFrameId = window.requestAnimationFrame(updateHeroState);
+      }
+    };
+
+    updateHeroState();
+    section.addEventListener("scroll", scheduleHeroUpdate, { passive: true });
+    window.addEventListener("scroll", scheduleHeroUpdate, { passive: true });
+    window.addEventListener("resize", scheduleHeroUpdate);
+
+    const contentResizeObserver =
+      typeof ResizeObserver === "undefined"
+        ? undefined
+        : new ResizeObserver(scheduleHeroUpdate);
+    if (heroContentRef.current && contentResizeObserver) {
+      contentResizeObserver.observe(heroContentRef.current);
+    }
+
+    return () => {
+      section.removeEventListener("scroll", scheduleHeroUpdate);
+      window.removeEventListener("scroll", scheduleHeroUpdate);
+      window.removeEventListener("resize", scheduleHeroUpdate);
+      contentResizeObserver?.disconnect();
+      if (animationFrameId !== 0) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [heroImageRatio, mountain.id, routes.length, selectionReason]);
+
+  const handleHeroImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
+    const { naturalHeight, naturalWidth } = event.currentTarget;
+    if (naturalHeight > 0 && naturalWidth > 0) {
+      setHeroImageRatio(naturalHeight / naturalWidth);
+    }
+  };
+
+  const heroFrameStyle = {
+    height: `${heroState.height}px`,
+    "--hero-image-url": `url("${heroImage}")`,
+    "--hero-sticky-offset": `${heroState.stickyOffset}px`,
+    "--hero-image-brightness": heroState.imageBrightness.toFixed(3),
+    "--hero-image-opacity": heroState.imageOpacity.toFixed(3),
+    "--hero-content-offset": `${heroState.contentOffset.toFixed(1)}px`,
+  } as CSSProperties;
 
   return (
     <section
-      className="min-h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink"
+      ref={sectionRef}
+      className="h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink"
       aria-label={`${mountain.name} 상세 정보`}
     >
       <header
-        className="relative min-h-[456px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0"
-        style={heroStyle}
+        className="relative flex items-end overflow-hidden bg-black text-white"
+        style={heroFrameStyle}
       >
-        <div className="pointer-events-none absolute inset-0" />
-        <div className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8">
-          
-
-          <div className="grid min-h-[384px] grid-cols-[minmax(0,1fr)_304px] items-end gap-[58px] pt-5 max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6 max-[900px]:pt-8">
-            <div className="max-w-[760px]">
+        <div
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black will-change-transform"
+          style={
+            {
+              transform: "translateY(var(--hero-sticky-offset))",
+            } as CSSProperties
+          }
+        >
+          {heroImage ? (
+            <img
+              className="absolute left-0 top-1/2 w-full max-w-none -translate-y-1/2"
+              src={heroImage}
+              alt={`${mountain.name} 대표 이미지`}
+              onLoad={handleHeroImageLoad}
+              style={
+                {
+                  filter: "brightness(var(--hero-image-brightness))",
+                  opacity: "var(--hero-image-opacity)",
+                } as CSSProperties
+              }
+            />
+          ) : (
+            <div className="h-full w-full bg-[linear-gradient(135deg,#133628,#06263a)]" />
+          )}
+        </div>
+        <div
+          ref={heroContentRef}
+          className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] will-change-transform max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8"
+          style={
+            {
+              transform:
+                "translateY(calc(var(--hero-sticky-offset) + var(--hero-content-offset)))",
+            } as CSSProperties
+          }
+        >
+          <div className="grid min-h-[384px] grid-cols-[minmax(0,1fr)_304px] grid-rows-[auto_auto] items-end gap-x-[58px] gap-y-0 pt-5 max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:grid-rows-none max-[900px]:gap-6 max-[900px]:pt-8">
+            <div className="col-start-1 row-start-1 max-w-[760px] max-[900px]:col-start-auto max-[900px]:row-start-auto">
               <span className="mb-10 inline-flex min-h-[42px] items-center rounded-[5px] bg-[#00385d] px-3.5 text-[22px] font-black leading-none text-white shadow-heroPanel">
                 {mountain.elevationMeters.toLocaleString()}m
               </span>
-              <h2 className="m-0 mb-10 text-[78px] font-black leading-[0.96] text-white shadow-black [letter-spacing:0] [text-shadow:0_5px_18px_rgba(0,0,0,0.42)] max-[900px]:text-[clamp(44px,14vw,64px)]">
+            </div>
+            <div className="col-start-1 row-start-2 flex max-w-[760px] self-stretch flex-col justify-between gap-10 max-[900px]:col-start-auto max-[900px]:row-start-auto max-[900px]:gap-6">
+              <h2 className="m-0 text-[78px] font-black leading-[0.96] text-white shadow-black [letter-spacing:0] [text-shadow:0_5px_18px_rgba(0,0,0,0.42)] max-[900px]:text-[clamp(44px,14vw,64px)]">
                 <MountainNameWithHanja
                   mountain={mountain}
                   className="flex-wrap"
                   hanjaClassName="text-[0.35em] leading-none text-white/95"
                 />
               </h2>
-
-              <p className="mt-[22px] max-w-[650px] text-lg font-extrabold leading-[31px] break-keep text-white/95">
+              <p className="m-0 max-w-[650px] text-lg font-extrabold leading-[31px] break-keep text-white/95">
                 {selectionReason}
               </p>
-              <div
-                className="mt-[50px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5"
-                aria-label="산 핵심 정보"
-              >
-              </div>
             </div>
 
             <aside
-              className="self-center rounded-[9px] border border-white/25 bg-black/45 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-sm [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white"
+              className="col-start-2 row-start-2 self-stretch rounded-[9px] border border-white/25 bg-black/45 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-sm max-[900px]:col-start-auto max-[900px]:row-start-auto max-[900px]:self-auto [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white"
               aria-label="산 정보"
             >
               <h3>산 정보</h3>
@@ -398,7 +673,7 @@ function MountainMainDetailView({
                   icon={<Clock size={16} />}
                   label="소요시간"
                   value={recommendedRoute?.estimatedTime ?? "확인 필요"}
-                />                
+                />
               </dl>
               <button
                 className="mt-[17px] inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-sm border border-white/70 bg-black/10 px-3 text-[15px] font-extrabold text-white"
@@ -481,51 +756,92 @@ function CourseDetailView({
       } as CSSProperties)
     : undefined;
   const stops = buildRouteStops(route);
-  const photos = route.coursePhotos?.length ? route.coursePhotos : guidePhotos;
+  const photos = guidePhotos;
+  const storageKey = getCourseReviewStorageKey(mountain.id, route.name);
+  const [activeTab, setActiveTab] = useState<CourseDetailTab>("overview");
+  const [difficultyIndex, setDifficultyIndex] = useState(
+    difficultyDefaultIndex[route.difficulty],
+  );
+  const [durationIndex, setDurationIndex] = useState(
+    getDefaultDurationIndex(route.estimatedTime),
+  );
+  const [reviewText, setReviewText] = useState("");
+  const [reviews, setReviews] = useState<CourseReview[]>([]);
+  const trimmedReviewText = reviewText.trim();
+
+  useEffect(() => {
+    setActiveTab("overview");
+    setDifficultyIndex(difficultyDefaultIndex[route.difficulty]);
+    setDurationIndex(getDefaultDurationIndex(route.estimatedTime));
+    setReviewText("");
+    setReviews(parseStoredReviews(window.localStorage.getItem(storageKey)));
+  }, [route.difficulty, route.estimatedTime, route.name, storageKey]);
+
+  const handleReviewSubmit = () => {
+    if (!trimmedReviewText) {
+      return;
+    }
+
+    const nextReview: CourseReview = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      nickname: "익명 등산객",
+      createdAt: new Date().toISOString(),
+      difficulty: difficultyEvaluationOptions[difficultyIndex],
+      duration: durationEvaluationOptions[durationIndex],
+      body: trimmedReviewText,
+      likes: 0,
+      comments: 0,
+    };
+    const nextReviews = [nextReview, ...reviews].slice(0, 20);
+
+    setReviews(nextReviews);
+    window.localStorage.setItem(storageKey, JSON.stringify(nextReviews));
+    setReviewText("");
+  };
 
   return (
     <section
-      className="min-h-[calc(100vh-60px)] overflow-auto bg-white font-sans text-mountain-ink"
+      className="min-h-[calc(100vh-68px)] overflow-auto bg-white font-sans text-mountain-ink"
       aria-label={`${mountain.name} ${route.name} 상세 정보`}
     >
       <header
-        className="relative min-h-[406px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0"
+        className="relative min-h-[394px] overflow-hidden bg-[linear-gradient(135deg,rgba(6,38,58,0.95),rgba(16,69,56,0.84)),linear-gradient(135deg,#133628,#06263a)] text-white max-[900px]:min-h-0"
         style={heroStyle}
       >
-        <div className="pointer-events-none absolute inset-0" />
-        <div className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,12,22,0.62)_0%,rgba(0,12,22,0.22)_58%,rgba(0,12,22,0.36)_100%)]" />
+        <div className="relative z-[1] mx-auto w-[1180px] max-w-[calc(100%-60px)] pb-[34px] pt-[18px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4 max-[900px]:pb-8">
           <nav
-            className="flex min-h-8 items-center gap-2.5 text-sm font-extrabold text-white/85 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-1.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:font-black [&_button]:text-white"
+            className="flex min-h-8 flex-wrap items-center gap-2 text-sm font-extrabold text-white/85 [&_button]:inline-flex [&_button]:items-center [&_button]:gap-1.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:p-0 [&_button]:font-black [&_button]:text-white"
             aria-label="현재 위치"
           >
             <button type="button" onClick={onBackToMap}>
               홈
             </button>
+            <span aria-hidden="true">›</span>
             <span>추천 코스</span>
+            <span aria-hidden="true">›</span>
             <button type="button" onClick={onBackToMountain}>
               {mountain.name}
             </button>
-            <strong>{route.name}</strong>
+            <span aria-hidden="true">›</span>
+            <strong>{getRouteDisplayName(route)}</strong>
           </nav>
 
-          <div className="grid min-h-[330px] grid-cols-[minmax(0,1fr)_312px] items-end gap-[58px] pt-[26px] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6">
+          <div className="grid min-h-[318px] grid-cols-[minmax(0,1fr)_312px] items-end gap-[58px] pt-[26px] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-[900px]:gap-6">
             <div>
               <span
                 className={cn(
-                  "mb-[18px] inline-flex rounded-[5px] bg-white px-2.5 py-1.5 text-sm font-black leading-[18px]",
+                  "mb-[18px] inline-flex rounded-[5px] bg-[#e10f07] px-2.5 py-1.5 text-sm font-black leading-[18px] text-white shadow-[0_8px_18px_rgba(0,0,0,0.26)]",
                   routeThemeClass[getRouteTheme(route)],
-                  "text-[var(--route-color)]",
                 )}
               >
                 {getRouteLabel(route)}
               </span>
-              <h2 className="m-0 max-w-[780px] text-5xl font-black leading-[1.12] text-white [letter-spacing:0] max-[900px]:text-[clamp(34px,11vw,48px)]">
-                <MountainNameWithHanja
-                  mountain={mountain}
-                  className="mr-2 flex-wrap"
-                  hanjaClassName="text-[0.46em] leading-none text-white/90"
-                />
-                <span>{route.name}</span>
+              <h2 className="m-0 max-w-[780px] text-[46px] font-black leading-[1.12] text-white [letter-spacing:0] [text-shadow:0_5px_18px_rgba(0,0,0,0.42)] max-[900px]:text-[clamp(34px,11vw,48px)]">
+                <span>{mountain.name} {getRouteDisplayName(route)}</span>
+                <b className="ml-3 inline-flex min-h-9 min-w-9 translate-y-[-4px] items-center justify-center rounded-[8px] bg-[#e10f07] px-2.5 text-[18px] font-black leading-none text-white shadow-[0_8px_18px_rgba(0,0,0,0.24)]">
+                  {difficultyShortLabels[route.difficulty]}
+                </b>
               </h2>
               <p className="mt-3 max-w-[650px] text-lg font-extrabold leading-[31px] text-white/95">
                 {getRouteSummary(route)}
@@ -535,7 +851,7 @@ function CourseDetailView({
                   route.recommendationReason ??
                   `${route.name}의 주요 경유지와 접근 정보를 확인하세요.`}
               </p>
-              <div className="mt-[50px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5">
+              <div className="mt-[46px] grid grid-cols-4 gap-[38px] max-[900px]:mt-7 max-[900px]:grid-cols-2 max-[900px]:gap-3.5">
                 <HeroFact
                   icon={<Route size={19} />}
                   label="거리"
@@ -560,7 +876,7 @@ function CourseDetailView({
             </div>
 
             <aside
-              className="self-center rounded-[9px] border border-white/25 bg-black/45 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-xl [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white"
+              className="self-center rounded-[8px] border border-white/20 bg-black/60 px-[22px] py-[23px] text-white shadow-heroPanel backdrop-blur-xl [&_dl]:grid [&_dl]:gap-0 [&_h3]:mb-4 [&_h3]:text-lg [&_h3]:font-black [&_h3]:text-white"
               aria-label="코스 정보 요약"
             >
               <h3>코스 정보 요약</h3>
@@ -606,90 +922,210 @@ function CourseDetailView({
         </div>
       </header>
 
-      <main className="mx-auto w-[1180px] max-w-[calc(100%-80px)] pb-0 pt-[30px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4">
+      <main className="pb-0">
         <div
-          className="mb-[22px] flex gap-[30px] border-b border-[#dedede] [&_button]:min-h-[54px] [&_button]:border-0 [&_button]:border-b-4 [&_button]:border-transparent [&_button]:bg-transparent [&_button]:px-6 [&_button]:text-[21px] [&_button]:font-black [&_button]:text-[#627168] [&_button.is-active]:border-b-[#e10f07] [&_button.is-active]:text-[#18221d]"
+          className="border-b border-[#dedede] bg-white"
           role="tablist"
           aria-label="코스 상세 탭"
         >
-          <button className="is-active" type="button">
-            코스 개요
-          </button>
-          <button type="button">포토 갤러리</button>
+          <div className="mx-auto flex w-[1180px] max-w-[calc(100%-60px)] gap-[30px] overflow-x-auto [&_button]:min-h-[54px] [&_button]:shrink-0 [&_button]:border-0 [&_button]:border-b-4 [&_button]:border-transparent [&_button]:bg-transparent [&_button]:px-6 [&_button]:text-[21px] [&_button]:font-black [&_button]:text-[#627168] [&_button.is-active]:border-b-[#e10f07] [&_button.is-active]:text-[#18221d] max-[900px]:max-w-none max-[900px]:px-4 max-[560px]:gap-3 max-[560px]:[&_button]:px-2 max-[560px]:[&_button]:text-[18px]">
+            <button
+              className={cn(activeTab === "overview" && "is-active")}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "overview"}
+              onClick={() => setActiveTab("overview")}
+            >
+              코스 개요
+            </button>
+            <button
+              className={cn(activeTab === "gallery" && "is-active")}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "gallery"}
+              onClick={() => setActiveTab("gallery")}
+            >
+              포토 갤러리
+            </button>
+          </div>
         </div>
 
-        <section
-          className="grid grid-cols-[minmax(0,760px)_minmax(310px,1fr)] gap-5 max-[900px]:grid-cols-1"
-          aria-label="코스 지도와 타임라인"
-        >
-          <div className="rounded-md border border-[#dedede] bg-white p-[22px]">
-            <h3>코스 지도</h3>
-            <KakaoRouteMap route={route} />
-          </div>
-          <CourseTimelinePanel stops={stops} route={route} />
-        </section>
+        <div className="mx-auto w-[1180px] max-w-[calc(100%-60px)] pt-[22px] max-[900px]:w-full max-[900px]:max-w-none max-[900px]:px-4">
+          {activeTab === "overview" ? (
+            <>
+            <section
+              className="grid grid-cols-[minmax(0,760px)_minmax(310px,1fr)] gap-5 max-[900px]:grid-cols-1"
+              aria-label="코스 지도와 타임라인"
+            >
+              <div className="rounded-md border border-[#dedede] bg-white p-[22px] shadow-[0_10px_28px_rgba(24,34,29,0.04)] max-[560px]:p-4">
+                <h3 className="m-0 mb-4 text-[22px] font-black">코스 이미지</h3>
+                <CourseMapImagePanel route={route} />
+              </div>
+              <CourseTimelinePanel stops={stops} route={route} />
+            </section>
 
-        <section
-          className="mt-6 rounded-md border border-[#dedede] bg-white p-[22px]"
-          aria-label={`${route.name} 코스 평가`}
-        >
-          <h3>
-            {mountain.name} {route.name} 평가
-          </h3>
-          <div className="grid grid-cols-[1fr_1fr_1.05fr] gap-4 max-[900px]:grid-cols-1">
-            <EvaluationPicker
-              title="난이도는 어떠셨나요?"
-              options={["쉬움", "보통", "약간 어려움", "어려움", "매우 어려움"]}
-              activeIndex={3}
-              icon="mountain"
+            <section
+              className="mt-6 rounded-md border border-[#dedede] bg-white p-[22px] max-[560px]:p-4"
+              aria-label={`${route.name} 코스 평가`}
+            >
+              <h3>
+                {mountain.name} {route.name} 평가
+              </h3>
+              <div className="grid grid-cols-[1fr_1fr_1.05fr] gap-4 max-[900px]:grid-cols-1">
+                <EvaluationPicker
+                  title="난이도는 어떠셨나요?"
+                  options={difficultyEvaluationOptions}
+                  activeIndex={difficultyIndex}
+                  icon="mountain"
+                  onChange={setDifficultyIndex}
+                />
+                <EvaluationPicker
+                  title="소요시간은 어떠셨나요?"
+                  options={durationEvaluationOptions}
+                  activeIndex={durationIndex}
+                  icon="clock"
+                  onChange={setDurationIndex}
+                />
+                <div className="grid min-w-0 rounded-lg border border-[#d8e0da] bg-white p-5 max-[560px]:p-4 [&>strong]:mb-4 [&>strong]:block [&>strong]:text-center [&>strong]:text-[17px] [&_button]:mt-3 [&_button]:min-h-12 [&_button]:rounded-lg [&_button]:border-0 [&_button]:bg-[#e10f07] [&_button]:font-black [&_button]:text-white [&_button:disabled]:cursor-not-allowed [&_button:disabled]:opacity-50 [&_span]:mt-1.5 [&_span]:justify-self-end [&_span]:text-xs [&_span]:text-[#627168] [&_textarea]:min-h-28 [&_textarea]:w-full [&_textarea]:resize-y [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-[#d8e0da] [&_textarea]:p-3 [&_textarea]:text-[15px] [&_textarea]:leading-6 [&_textarea]:outline-none [&_textarea:focus]:border-[#e10f07]">
+                  <strong>한줄평을 남겨주세요!</strong>
+                  <textarea
+                    maxLength={100}
+                    value={reviewText}
+                    placeholder="코스에 대한 느낌을 자유롭게 남겨주세요."
+                    onChange={(event) => setReviewText(event.target.value)}
+                  />
+                  <span>{reviewText.length}/100</span>
+                  <button
+                    type="button"
+                    disabled={!trimmedReviewText}
+                    onClick={handleReviewSubmit}
+                  >
+                    등록하기
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <CourseReviewSection reviews={reviews} routeName={route.name} />
+            </>
+          ) : (
+            <CoursePhotoGalleryPanel
+              mountainName={`${mountain.name} ${route.name}`}
+              links={photos}
             />
-            <EvaluationPicker
-              title="소요시간은 어떠셨나요?"
-              options={[
-                "2시간 이하",
-                "2~3시간",
-                "3~4시간",
-                "4~5시간",
-                "5시간 이상",
-              ]}
-              activeIndex={3}
-              icon="clock"
-            />
-            <div className="grid min-w-0 rounded-lg border border-[#d8e0da] bg-white p-5 [&>strong]:mb-4 [&>strong]:block [&>strong]:text-center [&_button]:mt-3 [&_button]:min-h-12 [&_button]:rounded-lg [&_button]:border-0 [&_button]:bg-[#e10f07] [&_button]:font-black [&_button]:text-white [&_button:disabled]:opacity-60 [&_span]:mt-1.5 [&_span]:justify-self-end [&_span]:text-xs [&_span]:text-[#627168] [&_textarea]:min-h-28 [&_textarea]:w-full [&_textarea]:resize-y [&_textarea]:rounded-lg [&_textarea]:border [&_textarea]:border-[#d8e0da] [&_textarea]:p-3">
-              <strong>한줄평을 남겨주세요!</strong>
-              <textarea
-                maxLength={100}
-                placeholder="코스에 대한 느낌을 자유롭게 남겨주세요."
-                disabled
-              />
-              <span>0/100</span>
-              <button type="button" disabled>
-                등록하기
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="mt-6 rounded-md border border-[#dedede] bg-white p-[22px]"
-          aria-label="다른 등산객들의 한줄평"
-        >
-          <h3>다른 등산객들의 한줄평</h3>
-          <div className="flex items-center gap-3 rounded-md border border-[#dedede] bg-white p-4 text-[#627168] [&_p]:m-0 [&_p]:leading-6">
-            <MessageCircle size={20} />
-            <p>
-              아직 등록된 후기가 없습니다. 후기 저장 기능이 준비되면 이 영역에
-              표시됩니다.
-            </p>
-          </div>
-        </section>
-
-        <PhotoGallery
-          mountainName={`${mountain.name} ${route.name}`}
-          links={photos}
-        />
+          )}
+        </div>
       </main>
       <DesignFooter />
+    </section>
+  );
+}
+
+function CourseReviewSection({
+  reviews,
+  routeName,
+}: {
+  reviews: CourseReview[];
+  routeName: string;
+}) {
+  return (
+    <section
+      className="mt-6 bg-white pb-[22px] max-[560px]:pb-4"
+      aria-label="다른 등산객들의 한줄평"
+    >
+      <div className="mb-4 flex items-center justify-between gap-3 max-[560px]:items-start">
+        <h3 className="m-0 text-[22px] font-black">다른 등산객들의 한줄평</h3>
+        {reviews.length > 0 ? (
+          <span className="shrink-0 rounded-full bg-[#f1f5f7] px-3 py-1 text-sm font-black text-[#627168]">
+            {reviews.length}개
+          </span>
+        ) : null}
+      </div>
+      {reviews.length > 0 ? (
+        <ul className="m-0 grid list-none grid-cols-5 gap-5 p-0 max-[1100px]:grid-cols-[repeat(5,minmax(190px,1fr))] max-[1100px]:overflow-x-auto max-[900px]:grid-cols-1">
+          {reviews.map((review) => (
+            <li
+              key={review.id}
+              className="min-h-[214px] rounded-md border border-[#d8e0da] bg-white p-4 shadow-[0_10px_24px_rgba(24,34,29,0.06)]"
+            >
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#d7dadd] text-[#8b9297]">
+                    <MountainIcon size={18} />
+                  </span>
+                  <div className="min-w-0">
+                    <strong className="block truncate text-[14px] font-black text-[#18221d]">
+                      {review.nickname}
+                    </strong>
+                    <time className="mt-0.5 block font-numeric text-xs font-bold text-[#49524d]">
+                      {formatReviewDate(review.createdAt)}
+                    </time>
+                  </div>
+                </div>
+                <span className="inline-flex min-h-7 shrink-0 items-center rounded-[5px] bg-[#e10f07] px-2 text-xs font-black text-white">
+                  {review.difficulty}
+                </span>
+              </div>
+              <div className="mb-3 flex items-center gap-1.5 text-sm font-bold text-[#18221d]">
+                <Clock size={15} />
+                {review.duration}
+              </div>
+              <p className="m-0 min-h-[72px] break-keep text-[14px] font-bold leading-6 text-[#2d3932]">
+                {review.body}
+              </p>
+              <div className="mt-4 flex items-center gap-4 text-sm font-black text-[#627168]">
+                <span className="inline-flex items-center gap-1.5">
+                  <Heart size={16} />
+                  {review.likes}
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <MessageCircle size={16} />
+                  {review.comments}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="grid min-h-[160px] place-items-center content-center gap-2 rounded-md border border-dashed border-[#d8e0da] bg-[#f7faf8] p-6 text-center text-[#627168]">
+          <MessageCircle size={24} className="text-[#2f6b4f]" />
+          <strong className="text-[#18221d]">아직 {routeName}에 등록된 후기가 없습니다.</strong>
+          <p className="m-0 leading-6">첫 한줄평을 남기면 이곳에 표시됩니다.</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CoursePhotoGalleryPanel({
+  mountainName,
+  links,
+}: {
+  mountainName: string;
+  links: MountainGuideLink[];
+}) {
+  if (links.length === 0) {
+    return (
+      <section
+        className="rounded-md border border-[#dedede] bg-white p-[22px] text-[#627168] max-[560px]:p-4"
+        aria-label={`${mountainName} 갤러리`}
+      >
+        <h3 className="mt-0 text-[#18221d]">포토 갤러리</h3>
+        <div className="grid min-h-[220px] place-items-center content-center gap-2 rounded-md bg-[#f4f8f6] p-6 text-center">
+          <MountainIcon size={26} className="text-[#2f6b4f]" />
+          <strong className="text-[#18221d]">등록된 코스 사진이 없습니다.</strong>
+          <p className="m-0 max-w-[360px] leading-6">
+            대표 산 사진이나 코스 사진이 추가되면 이 탭에서 크게 확인할 수
+            있습니다.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="rounded-md border border-[#dedede] bg-white p-[22px] max-[560px]:p-4">
+      <PhotoGallery mountainName={mountainName} links={links} />
     </section>
   );
 }
@@ -804,100 +1240,41 @@ function RouteSummaryCard({
   );
 }
 
-function KakaoRouteMap({ route }: { route: MountainGuideRoute }) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const overlaysRef = useRef<Array<KakaoMarker | KakaoPolyline>>([]);
-  const [mapError, setMapError] = useState<string | null>(null);
+function CourseMapImagePanel({ route }: { route: MountainGuideRoute }) {
+  const image = route.courseMapImage;
 
-  useEffect(() => {
-    if (
-      !route.mapPathCoordinates ||
-      route.mapPathCoordinates.length < 2 ||
-      !containerRef.current
-    ) {
-      return;
-    }
-
-    if (!isKakaoMapConfigured) {
-      setMapError("Kakao Maps 키가 없어 경로 지도를 표시할 수 없습니다.");
-      return;
-    }
-
-    let disposed = false;
-    loadKakaoMaps()
-      .then((maps) => {
-        if (disposed || !containerRef.current) {
-          return;
-        }
-
-        const first = route.mapPathCoordinates?.[0];
-        if (!first) {
-          return;
-        }
-
-        const map = new maps.Map(containerRef.current, {
-          center: new maps.LatLng(first.latitude, first.longitude),
-          level: 7,
-          tileAnimation: true,
-        });
-        const path = route.mapPathCoordinates!.map(
-          (point) => new maps.LatLng(point.latitude, point.longitude),
-        );
-        const polyline = new maps.Polyline({
-          map,
-          path,
-          strokeWeight: 5,
-          strokeColor: "#D90D0D",
-          strokeOpacity: 0.9,
-          strokeStyle: "solid",
-        });
-        const markers = route.mapPathCoordinates!.map((point, index) => {
-          return new maps.Marker({
-            map,
-            position: new maps.LatLng(point.latitude, point.longitude),
-            title: route.routeStops?.[index]?.name ?? `지점 ${index + 1}`,
-          });
-        });
-        overlaysRef.current = [polyline, ...markers];
-      })
-      .catch(() => setMapError("카카오맵을 불러오지 못했습니다."));
-
-    return () => {
-      disposed = true;
-      overlaysRef.current.forEach((overlay) => overlay.setMap(null));
-      overlaysRef.current = [];
-    };
-  }, [route]);
-
-  if (!route.mapPathCoordinates || route.mapPathCoordinates.length < 2) {
+  if (!image) {
     return (
       <div className="grid min-h-[430px] place-items-center content-center gap-2.5 rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px] p-6 text-center text-[#18221d] [&_p]:m-0 [&_p]:max-w-[420px] [&_p]:text-[#627168] [&_p]:leading-7 [&_strong]:text-xl [&_svg]:text-[#e10f07]">
-        <Search size={24} />
-        <strong>경로 좌표 준비 중</strong>
-        <p>
-          사용자가 입력한 위도/경도 좌표가 추가되면 카카오맵에 코스 동선이
-          표시됩니다.
-        </p>
-      </div>
-    );
-  }
-
-  if (mapError) {
-    return (
-      <div className="grid min-h-[430px] place-items-center content-center gap-2.5 rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px] p-6 text-center text-[#18221d] [&_p]:m-0 [&_p]:max-w-[420px] [&_p]:text-[#627168] [&_p]:leading-7 [&_strong]:text-xl [&_svg]:text-[#e10f07]">
-        <ShieldAlert size={24} />
-        <strong>지도 표시 실패</strong>
-        <p>{mapError}</p>
+        <Route size={24} />
+        <strong>코스 이미지 준비 중</strong>
+        <p>검증된 로컬 코스 지도 이미지를 추가하면 이 영역에 표시됩니다.</p>
       </div>
     );
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-[430px] overflow-hidden rounded-[5px] bg-[linear-gradient(rgba(47,107,79,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,107,79,0.08)_1px,transparent_1px),#edf3e8] bg-[length:42px_42px]"
-      aria-label={`${route.name} 카카오맵 경로`}
-    />
+    <figure className="m-0 overflow-hidden rounded-[5px] border border-[#d8e0da] bg-[#f4f8f6]">
+      <img
+        className="block min-h-[430px] w-full object-contain"
+        src={image.src}
+        alt={image.alt}
+        loading="lazy"
+      />
+      {image.sourceLabel || image.sourceUrl ? (
+        <figcaption className="flex flex-wrap items-center gap-2 border-t border-[#d8e0da] bg-white px-3 py-2 text-xs font-bold text-[#627168]">
+          <span>출처</span>
+          {image.sourceUrl ? (
+            <a className="inline-flex items-center gap-1 text-[#276c8f]" href={image.sourceUrl} target="_blank" rel="noreferrer">
+              {image.sourceLabel ?? image.sourceUrl}
+              <ExternalLink size={13} />
+            </a>
+          ) : (
+            <span>{image.sourceLabel}</span>
+          )}
+        </figcaption>
+      ) : null}
+    </figure>
   );
 }
 
@@ -999,13 +1376,11 @@ function CourseTimelinePanel({
             )}
             key={`${stop.name}-${index}`}
           >
-            <span className="justify-self-start rounded-[5px] bg-[#e10f07] px-2 py-1 text-[13px] font-black text-white">
-              {stop.label === "start"
-                ? "출발"
-                : stop.label === "finish"
-                  ? "도착"
-                  : ""}
-            </span>
+            {stop.label === "start" || stop.label === "finish" ? (
+              <span className="justify-self-start rounded-[5px] bg-[#e10f07] px-2 py-1 text-[13px] font-black text-white">
+                {stop.label === "start" ? "출발" : "도착"}
+              </span>
+            ) : null}
             <strong className="col-start-1 text-base leading-6 text-[#18221d]">
               {stop.name}
             </strong>
@@ -1039,26 +1414,29 @@ function EvaluationPicker({
   options,
   activeIndex,
   icon,
+  onChange,
 }: {
   title: string;
   options: string[];
   activeIndex: number;
   icon: "mountain" | "clock";
+  onChange: (index: number) => void;
 }) {
   return (
-    <div className="min-w-0 rounded-lg border border-[#d8e0da] bg-white p-5 [&>strong]:mb-4 [&>strong]:block [&>strong]:text-center [&>strong]:text-[17px]">
+    <div className="min-w-0 rounded-lg border border-[#d8e0da] bg-white p-5 max-[560px]:p-4 [&>strong]:mb-4 [&>strong]:block [&>strong]:text-center [&>strong]:text-[17px]">
       <strong>{title}</strong>
-      <div className="grid grid-cols-5 gap-2.5">
+      <div className="grid grid-cols-5 gap-2.5 max-[560px]:gap-1.5">
         {options.map((option, index) => (
           <button
             key={option}
             className={cn(
-              "grid min-w-0 justify-items-center gap-2 border-0 bg-transparent text-[#627168] [&_svg]:h-[42px] [&_svg]:w-[42px] [&_svg]:rounded-full [&_svg]:border [&_svg]:border-[#d8e0da] [&_svg]:bg-[#f7f8f7] [&_svg]:p-[9px] [&_span]:text-xs [&_span]:leading-4",
+              "grid min-w-0 cursor-pointer justify-items-center gap-2 rounded-md border-0 bg-transparent px-1 py-1 text-[#627168] transition hover:bg-[#f7f8f7] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e10f07]/40 [&_svg]:h-[42px] [&_svg]:w-[42px] [&_svg]:rounded-full [&_svg]:border [&_svg]:border-[#d8e0da] [&_svg]:bg-[#f7f8f7] [&_svg]:p-[9px] [&_span]:break-keep [&_span]:text-center [&_span]:text-xs [&_span]:leading-4 max-[560px]:[&_svg]:h-9 max-[560px]:[&_svg]:w-9 max-[560px]:[&_svg]:p-2 max-[560px]:[&_span]:text-[11px]",
               index === activeIndex &&
-                "[&_svg]:border-[#e10f07] [&_svg]:bg-[#fff1f1] [&_svg]:text-[#e10f07]",
+                "text-[#e10f07] [&_svg]:border-[#e10f07] [&_svg]:bg-[#fff1f1] [&_svg]:text-[#e10f07]",
             )}
             type="button"
-            disabled
+            aria-pressed={index === activeIndex}
+            onClick={() => onChange(index)}
           >
             {icon === "mountain" ? (
               <MountainIcon size={22} />
@@ -1102,7 +1480,7 @@ function HeroInfoRow({
 }) {
   return (
     <div className="grid min-h-[34px] grid-cols-[76px_minmax(0,1fr)] border-b border-white/10 py-1.5">
-      <dt className="flex items-center gap-1.5 text-[13px] leading-[22px] text-white/80 [&_svg]:text-[#a4d137]">
+      <dt className="flex items-center gap-1.5 text-[13px] leading-[22px] text-white/80 [&_svg]:text-[#ffde1a]">
         {icon}
         {label}
       </dt>
