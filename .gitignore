@@ -7,4 +7,6 @@ dist/
 coverage/
 .gstack/
 .design-review-screenshots/
+artifacts/
+.tmp-chrome*/
 pibma-nogit-*.md

@@ -1,6 +1,6 @@
-import type { MountainGuide } from '../types';
+﻿import type { MountainGuide } from '../types';
 
-const generatedMountainGuidesData: Record<string, MountainGuide> = {
+export const mountainGuides: Record<string, MountainGuide> = {
   '0000000002': {
     mountainId: '0000000002',
     status: 'draft',
@@ -17,6 +17,40 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
         distance: '약 7~9km 원점회귀',
         estimatedTime: '약 4~5시간',
         difficulty: 'normal',
+        routeStops: [
+        {
+          name: '가리산 자연휴양림 주차장',
+          label: 'start',
+          elevation: '확인 필요',
+          latitude: 37.8700,
+          longitude: 127.9560,
+        },
+        {
+          name: '새득이봉',
+          label: 'waypoint',
+          latitude: 37.8750,
+          longitude: 127.9650,
+        },
+        {
+          name: '가삽고개',
+          label: 'waypoint',
+          latitude: 37.8790,
+          longitude: 127.9720,
+        },
+        {
+          name: '가리산 정상',
+          label: 'summit',
+          elevation: '1,051m',
+          latitude: 37.8800,
+          longitude: 127.9810,
+        },
+        {
+          name: '가리산 자연휴양림 주차장',
+          label: 'finish',
+          latitude: 37.8700,
+          longitude: 127.9560,
+        },
+      ],
         parking: '가리산 자연휴양림 1·2주차장을 이용합니다. 주차료와 입장료는 시기별 운영 여부가 달라질 수 있어 방문 전 확인이 필요합니다.',
         transit: '홍천터미널에서 두촌 방면 버스 또는 택시로 가리산 자연휴양림까지 접근하는 방식이 현실적입니다. 배차가 적을 수 있어 시간표를 확인하세요.',
         features: [
@@ -373,13 +407,6 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
     confidence: 'high',
     selectionReason:
       "예로부터 경기 5악의 하나로서 폭포·계곡·암벽 등을 고루 갖추고 있으며, 임진강·개성 송악산 등의 조망이 좋은 점 등을 고려하여 선정. 수량이 풍부한 운계폭포가 있고, 정상에는 글자가 모두 마멸되어 판독이 불가능한 비뜰대왕비(파주군 향토유적 제8호)가 있는데 `설인귀(薛仁貴)'설과 `진흥왕 순수비'설이 나뉘어 속전되고 있음. 임꺽정이 관군의 추격을 피하기 위해 숨어 지냈다는 장군봉 아래 임꺽정 굴이 있음.",
-    courseImageLinks: [
-      {
-        label: '숲나들e 감악산 산행코스 이미지',
-        url: 'https://www.foresttrip.go.kr/com/cm/fileDownload.do?ATTCH_FILE_ID=166007&ATTCH_FILE_MSTER_ID=FILEMSTER_00160495',
-        type: 'official'
-      }
-    ],
     photoLinks: [
       {
         label: '숲나들e 감악산 사진 1',
@@ -436,9 +463,71 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
         ],
         warnings: [
           '숲나들e 자료의 교통 배차, 입장료, 주차 조건은 현재와 다를 수 있으니 방문 전 확인하세요.',
-          '정상부와 임꺽정봉 주변은 바위 구간이 있어 우천·결빙 시 주의하세요.'
+          '정상부와 임꺽정봉 주변은 바위 구간이 있어 우천·결빙 시 주의하세요.',
+          '코스 이미지는 준비 중이므로 현장 이정표와 최신 등산지도를 우선하세요.'
         ],
-        recommendationReason: '숲나들e 산행코스 표에서 추천코스로 표시된 동선이며, 검색 결과에서도 운계폭포·범륜사·정상 원점회귀 계열이 가장 자주 보입니다.'
+        recommendationReason: '숲나들e 산행코스 표에서 추천코스로 표시된 동선이며, 검색 결과에서도 운계폭포·범륜사·정상 원점회귀 계열이 가장 자주 보입니다.',
+        routeStops: [
+          {
+            name: '운계폭포 입구 주차장',
+            label: 'start',
+            elevation: '확인 필요',
+            estimatedArrival: '09:00',
+            latitude: 37.9344,
+            longitude: 126.9551
+          },
+          {
+            name: '범륜사',
+            label: 'waypoint',
+            elevation: '확인 필요',
+            distanceFromPrevious: '약 1.1km',
+            estimatedArrival: '09:30',
+            latitude: 37.9377,
+            longitude: 126.9607
+          },
+          {
+            name: '만남의 숲',
+            label: 'waypoint',
+            distanceFromPrevious: '약 0.9km',
+            estimatedArrival: '10:00',
+            latitude: 37.9398,
+            longitude: 126.9648
+          },
+          {
+            name: '까치봉',
+            label: 'waypoint',
+            distanceFromPrevious: '약 1.2km',
+            estimatedArrival: '10:45',
+            latitude: 37.9442,
+            longitude: 126.9664
+          },
+          {
+            name: '감악산 정상',
+            label: 'summit',
+            elevation: '675m',
+            distanceFromPrevious: '약 0.8km',
+            estimatedArrival: '11:15',
+            latitude: 37.9411,
+            longitude: 126.97
+          },
+          {
+            name: '임꺽정봉',
+            label: 'waypoint',
+            elevation: '676m',
+            distanceFromPrevious: '약 0.6km',
+            estimatedArrival: '11:35',
+            latitude: 37.9378,
+            longitude: 126.9735
+          },
+          {
+            name: '운계폭포 입구 주차장',
+            label: 'finish',
+            distanceFromPrevious: '약 2.5km',
+            estimatedArrival: '13:00',
+            latitude: 37.9344,
+            longitude: 126.9551
+          }
+        ],
       },
       {
         rank: 2,
@@ -468,8 +557,54 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
             type: 'blog'
           }
         ],
-        warnings: ['출발지와 도착지가 다르므로 대중교통, 택시, 차량 회수 가능 여부를 방문 전 확인하세요.'],
-        recommendationReason: '숲나들e 산행코스 표의 기타코스1이며, 세부 교통은 검색 자료를 바탕으로 보수적으로 정리했습니다.'
+        warnings: [
+          '출발지와 도착지가 다르므로 대중교통, 택시, 차량 회수 가능 여부를 방문 전 확인하세요.',
+          '코스 이미지는 준비 중이므로 현장 이정표와 최신 등산지도를 우선하세요.'
+        ],
+        recommendationReason: '숲나들e 산행코스 표의 기타코스1이며, 세부 교통은 검색 자료를 바탕으로 보수적으로 정리했습니다.',
+        routeStops: [
+          {
+            name: '설마리',
+            label: 'start',
+            estimatedArrival: '09:00',
+            latitude: 37.9318,
+            longitude: 126.9564
+          },
+          {
+            name: '범륜사',
+            label: 'waypoint',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '09:35',
+            latitude: 37.9377,
+            longitude: 126.9607
+          },
+          {
+            name: '감악산 정상',
+            label: 'summit',
+            elevation: '675m',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '11:15',
+            latitude: 37.9411,
+            longitude: 126.97
+          },
+          {
+            name: '임꺽정봉',
+            label: 'waypoint',
+            elevation: '676m',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '11:45',
+            latitude: 37.9378,
+            longitude: 126.9735
+          },
+          {
+            name: '신암리',
+            label: 'finish',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '12:40',
+            latitude: 37.9284,
+            longitude: 126.9832
+          }
+        ],
       },
       {
         rank: 3,
@@ -499,8 +634,61 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
             type: 'search'
           }
         ],
-        warnings: ['하산지가 출발지와 다르므로 교통편, 택시 가능 여부, 등산로 통제를 방문 전 확인하세요.'],
-        recommendationReason: '숲나들e 산행코스 표의 기타코스2이며, 검색 자료가 부족한 구간은 확인 필요로 표시했습니다.'
+        warnings: [
+          '하산지가 출발지와 다르므로 교통편, 택시 가능 여부, 등산로 통제를 방문 전 확인하세요.',
+          '코스 이미지는 준비 중이므로 현장 이정표와 최신 등산지도를 우선하세요.'
+        ],
+        recommendationReason: '숲나들e 산행코스 표의 기타코스2이며, 검색 자료가 부족한 구간은 확인 필요로 표시했습니다.',
+        routeStops: [
+          {
+            name: '신암리',
+            label: 'start',
+            estimatedArrival: '09:00',
+            latitude: 37.9284,
+            longitude: 126.9832
+          },
+          {
+            name: '신암저수지',
+            label: 'waypoint',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '09:35',
+            latitude: 37.9321,
+            longitude: 126.9792
+          },
+          {
+            name: '감악산 정상',
+            label: 'summit',
+            elevation: '675m',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '10:55',
+            latitude: 37.9411,
+            longitude: 126.97
+          },
+          {
+            name: '범륜사',
+            label: 'waypoint',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '12:05',
+            latitude: 37.9377,
+            longitude: 126.9607
+          },
+          {
+            name: '운계폭포',
+            label: 'waypoint',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '12:25',
+            latitude: 37.9358,
+            longitude: 126.9579
+          },
+          {
+            name: '설마리',
+            label: 'finish',
+            distanceFromPrevious: '확인 필요',
+            estimatedArrival: '13:00',
+            latitude: 37.9318,
+            longitude: 126.9564
+          }
+        ],
       }
     ],
     verificationLinks: [
@@ -965,5 +1153,3 @@ const generatedMountainGuidesData: Record<string, MountainGuide> = {
     notes: '관악산은 출발지가 많아 주차와 하산지가 코스 선택의 핵심입니다. 대중교통 이용이 더 안정적인 경우가 많습니다.'
   }
 };
-
-export const generatedMountainGuides = generatedMountainGuidesData;

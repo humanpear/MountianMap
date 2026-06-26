@@ -19,4 +19,14 @@ describe('generate-mountain-guides script', () => {
     expect(script).toContain('writeFileSync(OUTPUT_PATH, renderGuideFile(guides),');
     expect(script).not.toContain('OPENAI_API_KEY');
   });
+
+  it('uses 숲나들e as source while leaving course-map image collection to the scraper', () => {
+    const script = readFileSync('scripts/generate-mountain-guides.mjs', 'utf8');
+
+    expect(script).toContain('숲나들e');
+    expect(script).toContain('선정 이유');
+    expect(script).toContain('산행코스 표 텍스트');
+    expect(script).toContain('scripts/scrape-foresttrip-courses.mjs');
+    expect(script).toContain('routeTrackUrl, mapPathCoordinates 같은 트랙 필드는 생성하지 않습니다.');
+  });
 });

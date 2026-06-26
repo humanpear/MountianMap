@@ -1,4 +1,4 @@
-import type { Mountain } from '../types';
+﻿import type { Mountain } from '../types';
 
 export const mountains: Mountain[] = [
   {
@@ -11,8 +11,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1051,
     "address": "강원도 춘천시 북산면ㆍ동면, 홍천군 두촌면ㆍ화촌면",
     "shortDescription": "강원특별자치도 강원도 춘천시 북산면ㆍ동면, 홍천군 두촌면ㆍ화촌면에 위치한 해발 1,051m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000003",
@@ -24,8 +23,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1561,
     "address": "강원도 정선군 정선읍 회동리ㆍ북평면, 평창군 진부면",
     "shortDescription": "강원특별자치도 강원도 정선군 정선읍 회동리ㆍ북평면, 평창군 진부면에 위치한 해발 1,561m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000001",
@@ -37,8 +35,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1430,
     "address": "경상남도 합천군ㆍ거창군, 경상북도 성주군",
     "shortDescription": "경상북도 경상남도 합천군ㆍ거창군, 경상북도 성주군에 위치한 해발 1,430m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000004",
@@ -50,8 +47,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1240,
     "address": "울산광역시 울주군, 경상북도 청도군, 경상남도 밀양시",
     "shortDescription": "울산광역시 울산광역시 울주군, 경상북도 청도군, 경상남도 밀양시에 위치한 해발 1,240m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000005",
@@ -63,8 +59,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 675,
     "address": "경기도 파주시 적성면, 양주시 남면, 연천군 전곡읍",
     "shortDescription": "경기도 경기도 파주시 적성면, 양주시 남면, 연천군 전곡읍에 위치한 해발 675m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000006",
@@ -76,8 +71,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 584,
     "address": "전라북도 순창군 팔덕면, 전라남도 담양군 용면",
     "shortDescription": "전북특별자치도 전라북도 순창군 팔덕면, 전라남도 담양군 용면에 위치한 해발 584m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000007",
@@ -89,8 +83,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 845,
     "address": "대전광역시, 충청남도 공주시 계룡면, 논산시 상월면, 계룡시 신도안면",
     "shortDescription": "충청남도 대전광역시, 충청남도 공주시 계룡면, 논산시 상월면, 계룡시 신도안면에 위치한 해발 845m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000008",
@@ -102,8 +95,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1577,
     "address": "강원도 홍천군 내면, 평창군 용편면ㆍ진부면",
     "shortDescription": "강원특별자치도 강원도 홍천군 내면, 평창군 용편면ㆍ진부면에 위치한 해발 1,577m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000009",
@@ -115,8 +107,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 887,
     "address": "강원도 홍천군 동면, 화촌면",
     "shortDescription": "강원특별자치도 강원도 홍천군 동면, 화촌면에 위치한 해발 887m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000010",
@@ -128,8 +119,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 629,
     "address": "서울특별시 관악구, 경기도 안양시, 과천시",
     "shortDescription": "서울특별시 서울특별시 관악구, 경기도 안양시, 과천시에 위치한 해발 629m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000011",
@@ -141,8 +131,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 877,
     "address": "충청북도 보은군 마로면ㆍ속리산면, 경상북도 상주신 화북면,",
     "shortDescription": "충청북도 충청북도 보은군 마로면ㆍ속리산면, 경상북도 상주신 화북면,에 위치한 해발 877m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000012",
@@ -154,8 +143,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 701,
     "address": "경상남도 남해군 상주면, 이동면, 삼동면",
     "shortDescription": "경상남도 경상남도 남해군 상주면, 이동면, 삼동면에 위치한 해발 701m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000013",
@@ -167,8 +155,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1016,
     "address": "충청북도 제천시 수산면, 단양군 적성면",
     "shortDescription": "충청북도 충청북도 제천시 수산면, 단양군 적성면에 위치한 해발 1,016m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000014",
@@ -180,8 +167,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 977,
     "address": "경상북도 구미시 칠곡군 북삼읍, 김천시 남면",
     "shortDescription": "경상북도 경상북도 구미시 칠곡군 북삼읍, 김천시 남면에 위치한 해발 977m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000015",
@@ -193,8 +179,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 802,
     "address": "부산광역시 금정구ㆍ북구, 경상남도 양산시",
     "shortDescription": "부산광역시 부산광역시 금정구ㆍ북구, 경상남도 양산시에 위치한 해발 802m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000016",
@@ -206,8 +191,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 368,
     "address": "전라남도 신안군 흑산면 홍도",
     "shortDescription": "전라남도 전라남도 신안군 흑산면 홍도에 위치한 해발 368m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000017",
@@ -219,8 +203,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 468,
     "address": "경상북도 경주시 남산동, 내남면",
     "shortDescription": "경상북도 경상북도 경주시 남산동, 내남면에 위치한 해발 468m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000018",
@@ -232,8 +215,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 710,
     "address": "경상북도 포항시 송라면ㆍ청하면ㆍ죽장면, 영덕군 남정면",
     "shortDescription": "경상북도 경상북도 포항시 송라면ㆍ청하면ㆍ죽장면, 영덕군 남정면에 위치한 해발 710m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000019",
@@ -245,8 +227,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 763,
     "address": "전라북도 정읍시 내장동, 순창군 쌍치면ㆍ복흥면",
     "shortDescription": "전북특별자치도 전라북도 정읍시 내장동, 순창군 쌍치면ㆍ복흥면에 위치한 해발 763m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000020",
@@ -258,8 +239,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 878,
     "address": "충청남도 논산시 벌곡면ㆍ금산군 진산면, 전라북도 완주군 운주면",
     "shortDescription": "충청남도 충청남도 논산시 벌곡면ㆍ금산군 진산면, 전라북도 완주군 운주면에 위치한 해발 878m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000021",
@@ -271,8 +251,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1304,
     "address": "강원도 양구군 동면, 인제군 서화면",
     "shortDescription": "강원특별자치도 강원도 양구군 동면, 인제군 서화면에 위치한 해발 1,304m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000022",
@@ -284,8 +263,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 931,
     "address": "경상북도 문경시 가은읍, 충청북도 괴산군 청천면",
     "shortDescription": "경상북도 경상북도 문경시 가은읍, 충청북도 괴산군 청천면에 위치한 해발 931m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000023",
@@ -297,8 +275,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 495,
     "address": "충청남도 예산군 덕산면",
     "shortDescription": "충청남도 충청남도 예산군 덕산면에 위치한 해발 495m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000024",
@@ -310,8 +287,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1614,
     "address": "전라북도 무주군ㆍ장수군, 경상남도 거창군ㆍ함양군",
     "shortDescription": "전북특별자치도 전라북도 무주군ㆍ장수군, 경상남도 거창군ㆍ함양군에 위치한 해발 1,614m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000025",
@@ -323,8 +299,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1071,
     "address": "강원도 삼척시 신기면, 태백시 하사미동",
     "shortDescription": "강원특별자치도 강원도 삼척시 신기면, 태백시 하사미동에 위치한 해발 1,071m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000026",
@@ -336,8 +311,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 964,
     "address": "충청북도 단양군  단성면, 대강면",
     "shortDescription": "충청북도 충청북도 단양군  단성면, 대강면에 위치한 해발 964m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000027",
@@ -349,8 +323,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 740,
     "address": "서울특별시 도봉구, 경기도 의정부시 호원동ㆍ양주시 장흥면",
     "shortDescription": "서울특별시 서울특별시 도봉구, 경기도 의정부시 호원동ㆍ양주시 장흥면에 위치한 해발 740m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000028",
@@ -362,8 +335,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 703,
     "address": "전라남도 해남군 삼산면ㆍ북일면ㆍ북평면ㆍ현산면",
     "shortDescription": "전라남도 전라남도 해남군 삼산면ㆍ북일면ㆍ북평면ㆍ현산면에 위치한 해발 703m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000029",
@@ -375,8 +347,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1353,
     "address": "강원도 동해시 삼화동, 삼척시 미로면ㆍ하장면",
     "shortDescription": "강원특별자치도 강원도 동해시 삼화동, 삼척시 미로면ㆍ하장면에 위치한 해발 1,353m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000030",
@@ -388,8 +359,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 469,
     "address": "인천광역시 강화군 화도면",
     "shortDescription": "인천광역시 인천광역시 강화군 화도면에 위치한 해발 469m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000031",
@@ -401,8 +371,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 686,
     "address": "전라북도 진안군 진안읍ㆍ마령면",
     "shortDescription": "전북특별자치도 전라북도 진안군 진안읍ㆍ마령면에 위치한 해발 686m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000032",
@@ -414,8 +383,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 923,
     "address": "강원도 철원군 갈말읍, 경기도 포천시 영북면ㆍ이동면",
     "shortDescription": "경기도 강원도 철원군 갈말읍, 경기도 포천시 영북면ㆍ이동면에 위치한 해발 923m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000033",
@@ -427,8 +395,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1267,
     "address": "경기도 가평군 북면ㆍ하면",
     "shortDescription": "경기도 경기도 가평군 북면ㆍ하면에 위치한 해발 1,267m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000034",
@@ -440,8 +407,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 794,
     "address": "전라북도 김제시 금산면, 전주시 완산구, 완주군 구이면",
     "shortDescription": "전북특별자치도 전라북도 김제시 금산면, 전주시 완산구, 완주군 구이면에 위치한 해발 794m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000035",
@@ -453,8 +419,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1187,
     "address": "광주광역시 동구, 전라남도 담양군 남면ㆍ화순군 이서면",
     "shortDescription": "전라남도 광주광역시 동구, 전라남도 담양군 남면ㆍ화순군 이서면에 위치한 해발 1,187m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000036",
@@ -466,8 +431,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 761,
     "address": "경상남도 창원시 교방동ㆍ두척동ㆍ내서읍",
     "shortDescription": "경상남도 경상남도 창원시 교방동ㆍ두척동ㆍ내서읍에 위치한 해발 761m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000037",
@@ -479,8 +443,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 461,
     "address": "경상남도 통영시 산양읍ㆍ봉평동",
     "shortDescription": "경상남도 경상남도 통영시 산양읍ㆍ봉평동에 위치한 해발 461m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000038",
@@ -492,8 +455,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1242,
     "address": "충청북도 영동군, 전라북도 무주군, 경상북도 김천시",
     "shortDescription": "충청북도 충청북도 영동군, 전라북도 무주군, 경상북도 김천시에 위치한 해발 1,242m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000039",
@@ -505,8 +467,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 743,
     "address": "전라북도 고창군 신림면ㆍ정읍시 입암면, 전라남도 장성군",
     "shortDescription": "전북특별자치도 전라북도 고창군 신림면ㆍ정읍시 입암면, 전라남도 장성군에 위치한 해발 743m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000040",
@@ -518,8 +479,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1444,
     "address": "강원도 인제군 기린면ㆍ상남면, 홍천군 내면",
     "shortDescription": "강원특별자치도 강원도 인제군 기린면ㆍ상남면, 홍천군 내면에 위치한 해발 1,444m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000041",
@@ -531,8 +491,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1350,
     "address": "강원도 평창군 방림면, 횡성군 안흥면, 영월군 수주면",
     "shortDescription": "강원특별자치도 강원도 평창군 방림면, 횡성군 안흥면, 영월군 수주면에 위치한 해발 1,350m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000042",
@@ -544,8 +503,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 741,
     "address": "전라남도 장성군 북하면, 전라북도 순창군 복흥면",
     "shortDescription": "전북특별자치도 전라남도 장성군 북하면, 전라북도 순창군 복흥면에 위치한 해발 741m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000044",
@@ -557,8 +515,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1218,
     "address": "전라남도 광양시 진상면ㆍ옥룡면ㆍ봉강면ㆍ다압면, 구례군 간전면",
     "shortDescription": "전라남도 전라남도 광양시 진상면ㆍ옥룡면ㆍ봉강면ㆍ다압면, 구례군 간전면에 위치한 해발 1,218m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000045",
@@ -570,8 +527,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 883,
     "address": "강원도 정선군 신동읍, 평창군 미탄면",
     "shortDescription": "강원특별자치도 강원도 정선군 신동읍, 평창군 미탄면에 위치한 해발 883m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000043",
@@ -583,8 +539,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 904,
     "address": "경기도 포천시 이동면, 강원도 화천군 사내면",
     "shortDescription": "경기도 경기도 포천시 이동면, 강원도 화천군 사내면에 위치한 해발 904m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000046",
@@ -596,8 +551,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 508,
     "address": "전라북도 부안군 변산면, 상서면, 진서면",
     "shortDescription": "전북특별자치도 전라북도 부안군 변산면, 상서면, 진서면에 위치한 해발 508m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000047",
@@ -609,8 +563,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 837,
     "address": "서울특별시 강북구ㆍ성북구ㆍ종로구ㆍ은평구, 경기도 고양시ㆍ양주시",
     "shortDescription": "서울특별시 서울특별시 강북구ㆍ성북구ㆍ종로구ㆍ은평구, 경기도 고양시ㆍ양주시에 위치한 해발 837m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000048",
@@ -622,8 +575,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1084,
     "address": "대구광역시 달성군 옥포면ㆍ유가면ㆍ가창면, 경상북도 청도군 각북면",
     "shortDescription": "경상북도 대구광역시 달성군 옥포면ㆍ유가면ㆍ가창면, 경상북도 청도군 각북면에 위치한 해발 1,084m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000049",
@@ -635,8 +587,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 654,
     "address": "강원도 춘천시 서면",
     "shortDescription": "강원특별자치도 강원도 춘천시 서면에 위치한 해발 654m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000050",
@@ -648,8 +599,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 904,
     "address": "충청남도 금산군 추부면ㆍ군북면, 충청북도 옥천군 군서면",
     "shortDescription": "충청남도 충청남도 금산군 추부면ㆍ군북면, 충청북도 옥천군 군서면에 위치한 해발 904m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000051",
@@ -661,8 +611,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 336,
     "address": "전라북도 고창군 아산면ㆍ심원면ㆍ해리면",
     "shortDescription": "전북특별자치도 전라북도 고창군 아산면ㆍ심원면ㆍ해리면에 위치한 해발 336m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000052",
@@ -674,8 +623,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1708,
     "address": "강원도 양양군 서면ㆍ강현면, 속초시 설악동, 인제군 북면ㆍ인제읍",
     "shortDescription": "강원특별자치도 강원도 양양군 서면ㆍ강현면, 속초시 설악동, 인제군 북면ㆍ인제읍에 위치한 해발 1,708m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000053",
@@ -687,8 +635,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 984,
     "address": "경상북도 울릉군 울릉읍 서면ㆍ북면",
     "shortDescription": "경상북도 경상북도 울릉군 울릉읍 서면ㆍ북면에 위치한 해발 984m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000054",
@@ -700,8 +647,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1439,
     "address": "충청북도 단양군 단양읍, 경상북도 영주시 풍기읍",
     "shortDescription": "충청북도 충청북도 단양군 단양읍, 경상북도 영주시 풍기읍에 위치한 해발 1,439m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000055",
@@ -713,8 +659,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 587,
     "address": "경기도 동두천시, 포천시 신북면",
     "shortDescription": "경기도 경기도 동두천시, 포천시 신북면에 위치한 해발 587m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000056",
@@ -726,8 +671,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1057,
     "address": "충청북도 보은군 내속리면, 경상북도 상주시 화북면",
     "shortDescription": "충청북도 충청북도 보은군 내속리면, 경상북도 상주시 화북면에 위치한 해발 1,057m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000057",
@@ -739,8 +683,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1209,
     "address": "울산광역시 울주군 삼남면ㆍ상북면",
     "shortDescription": "울산광역시 울산광역시 울주군 삼남면ㆍ상북면에 위치한 해발 1,209m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000058",
@@ -752,8 +695,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 528,
     "address": "경상남도 고성군 개천면ㆍ영현면",
     "shortDescription": "경상남도 경상남도 고성군 개천면ㆍ영현면에 위치한 해발 528m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000059",
@@ -765,8 +707,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1563,
     "address": "강원도 강릉시 연곡면, 평창군 진부면, 홍천군 내면",
     "shortDescription": "강원특별자치도 강원도 강릉시 연곡면, 평창군 진부면, 홍천군 내면에 위치한 해발 1,563m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000060",
@@ -778,8 +719,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 779,
     "address": "강원도 춘천시 북산면, 화천군 간동면",
     "shortDescription": "강원특별자치도 강원도 춘천시 북산면, 화천군 간동면에 위치한 해발 779m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000061",
@@ -791,8 +731,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1157,
     "address": "경기도 양평군 용문면ㆍ옥천면",
     "shortDescription": "경기도 경기도 양평군 용문면ㆍ옥천면에 위치한 해발 1,157m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000062",
@@ -804,8 +743,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 878,
     "address": "강원도 화천군 간동면ㆍ하남면, 춘천시 사북면",
     "shortDescription": "강원특별자치도 강원도 화천군 간동면ㆍ하남면, 춘천시 사북면에 위치한 해발 878m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000063",
@@ -817,8 +755,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1188,
     "address": "경상북도 청도군 운문면, 경상남도 밀양시 산내면",
     "shortDescription": "경상북도 경상북도 청도군 운문면, 경상남도 밀양시 산내면에 위치한 해발 1,188m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000064",
@@ -830,8 +767,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 936,
     "address": "경기도 포천시 화현면, 가평군 하면",
     "shortDescription": "경기도 경기도 포천시 화현면, 가평군 하면에 위치한 해발 936m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000065",
@@ -843,8 +779,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1126,
     "address": "전라북도 진안군 부귀면, 주천면, 정천면, 완주군 동상면",
     "shortDescription": "전북특별자치도 전라북도 진안군 부귀면, 주천면, 정천면, 완주군 동상면에 위치한 해발 1,126m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000066",
@@ -856,8 +791,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1094,
     "address": "충청북도 제천시 한수면, 덕산면",
     "shortDescription": "충청북도 충청북도 제천시 한수면, 덕산면에 위치한 해발 1,094m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000067",
@@ -869,8 +803,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 809,
     "address": "전라남도 강진군 성전면, 영암군 영암읍ㆍ군서면ㆍ학산면",
     "shortDescription": "전라남도 전라남도 강진군 성전면, 영암군 영암읍ㆍ군서면ㆍ학산면에 위치한 해발 809m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000068",
@@ -882,8 +815,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 862,
     "address": "경기도 양평군 옥천면, 가평군 설악면",
     "shortDescription": "경기도 경기도 양평군 옥천면, 가평군 설악면에 위치한 해발 862m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000069",
@@ -895,8 +827,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 999,
     "address": "강원도 삼척시 가곡면ㆍ원덕읍, 경상북도 울진군 북면",
     "shortDescription": "강원특별자치도 강원도 삼척시 가곡면ㆍ원덕읍, 경상북도 울진군 북면에 위치한 해발 999m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000070",
@@ -908,8 +839,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1237,
     "address": "전라북도 장수군 계남면, 장수읍",
     "shortDescription": "전북특별자치도 전라북도 장수군 계남면, 장수읍에 위치한 해발 1,237m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000071",
@@ -921,8 +851,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1189,
     "address": "경상남도 밀양시 단장면ㆍ산내면, 울산광역시 울주군 상북면",
     "shortDescription": "경상남도 경상남도 밀양시 단장면ㆍ산내면, 울산광역시 울주군 상북면에 위치한 해발 1,189m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000072",
@@ -934,8 +863,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1034,
     "address": "전라북도 무주군 적상면",
     "shortDescription": "전북특별자치도 전라북도 무주군 적상면에 위치한 해발 1,034m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000073",
@@ -947,8 +875,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1424,
     "address": "강원도 인제군 인제읍ㆍ기린면, 양양군 서면",
     "shortDescription": "강원특별자치도 강원도 인제군 인제읍ㆍ기린면, 양양군 서면에 위치한 해발 1,424m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000074",
@@ -960,8 +887,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 884,
     "address": "전라남도 순천시 송광면ㆍ승주읍",
     "shortDescription": "전라남도 전라남도 순천시 송광면ㆍ승주읍에 위치한 해발 884m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000075",
@@ -973,8 +899,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 721,
     "address": "경상북도 청송군 부동면ㆍ청송읍, 영덕군 지품면ㆍ달산면",
     "shortDescription": "경상북도 경상북도 청송군 부동면ㆍ청송읍, 영덕군 지품면ㆍ달산면에 위치한 해발 721m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000076",
@@ -986,8 +911,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1106,
     "address": "경상북도 문경시 문경읍",
     "shortDescription": "경상북도 경상북도 문경시 문경읍에 위치한 해발 1,106m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000077",
@@ -999,8 +923,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1915,
     "address": "경상남도 산청군ㆍ하동군ㆍ함양군, 전라북도 남원시, 전라남도 구례군",
     "shortDescription": "경상남도 경상남도 산청군ㆍ하동군ㆍ함양군, 전라북도 남원시, 전라남도 구례군에 위치한 해발 1,915m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000078",
@@ -1012,8 +935,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 398,
     "address": "경상남도 통영시 사량면",
     "shortDescription": "경상남도 경상남도 통영시 사량면에 위치한 해발 398m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000079",
@@ -1025,8 +947,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 723,
     "address": "전라남도 장흥군 관산읍, 대덕읍",
     "shortDescription": "전라남도 전라남도 장흥군 관산읍, 대덕읍에 위치한 해발 723m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000080",
@@ -1038,8 +959,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 812,
     "address": "경기도 남양주시 오남읍, 화도읍",
     "shortDescription": "경기도 경기도 남양주시 오남읍, 화도읍에 위치한 해발 812m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000081",
@@ -1051,8 +971,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 922,
     "address": "경상남도 양산시 하북면, 상북면",
     "shortDescription": "경상남도 경상남도 양산시 하북면, 상북면에 위치한 해발 922m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000082",
@@ -1064,8 +983,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 715,
     "address": "충청북도 영동군 양산면, 충청남도 금산군 제원면",
     "shortDescription": "충청북도 충청북도 영동군 양산면, 충청남도 금산군 제원면에 위치한 해발 715m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000083",
@@ -1077,8 +995,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 870,
     "address": "경상북도 봉화군 명호면ㆍ재산면, 안동시 도산면ㆍ예안면",
     "shortDescription": "경상북도 경상북도 봉화군 명호면ㆍ재산면, 안동시 도산면ㆍ예안면에 위치한 해발 870m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000084",
@@ -1090,8 +1007,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 731,
     "address": "전라남도 담양군 용면, 전라북도 순창군 복흥면",
     "shortDescription": "전북특별자치도 전라남도 담양군 용면, 전라북도 순창군 복흥면에 위치한 해발 731m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000085",
@@ -1103,8 +1019,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 879,
     "address": "경기도 가평군 상면, 남양주시 수동면",
     "shortDescription": "경기도 경기도 가평군 상면, 남양주시 수동면에 위치한 해발 879m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000086",
@@ -1116,8 +1031,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1288,
     "address": "강원도 원주시, 횡성군, 영월군",
     "shortDescription": "강원특별자치도 강원도 원주시, 횡성군, 영월군에 위치한 해발 1,288m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000087",
@@ -1129,8 +1043,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 561,
     "address": "충청남도 청양군 대치면, 정산면, 장평면",
     "shortDescription": "충청남도 충청남도 청양군 대치면, 정산면, 장평면에 위치한 해발 561m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000088",
@@ -1142,8 +1055,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1567,
     "address": "강원도 태백시, 경상북도 봉화군 석포면",
     "shortDescription": "강원특별자치도 강원도 태백시, 경상북도 봉화군 석포면에 위치한 해발 1,567m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000089",
@@ -1155,8 +1067,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1027,
     "address": "강원도 영월군 영월읍, 충청북도 단양군 영춘면",
     "shortDescription": "강원특별자치도 강원도 영월군 영월읍, 충청북도 단양군 영춘면에 위치한 해발 1,027m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000090",
@@ -1168,8 +1079,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1193,
     "address": "대구광역시 동구, 경상북도 군위군 부계면, 영천시 신녕면",
     "shortDescription": "경상북도 대구광역시 동구, 경상북도 군위군 부계면, 영천시 신녕면에 위치한 해발 1,193m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000091",
@@ -1181,8 +1091,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 302,
     "address": "강원도 홍천군 서면",
     "shortDescription": "강원특별자치도 강원도 홍천군 서면에 위치한 해발 302m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000092",
@@ -1194,8 +1103,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 609,
     "address": "전라남도 고흥군 영남면, 점암면",
     "shortDescription": "전라남도 전라남도 고흥군 영남면, 점암면에 위치한 해발 609m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000093",
@@ -1207,8 +1115,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1950,
     "address": "제주특별자치도",
     "shortDescription": "제주특별자치도 제주특별자치도에 위치한 해발 1,950m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000094",
@@ -1220,8 +1127,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1468,
     "address": "경기도 가평군 북면, 강원도 화천군 사내면",
     "shortDescription": "경기도 경기도 가평군 북면, 강원도 화천군 사내면에 위치한 해발 1,468m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000095",
@@ -1233,8 +1139,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 757,
     "address": "경상남도 창녕군 고암면, 창녕읍",
     "shortDescription": "경상남도 경상남도 창녕군 고암면, 창녕읍에 위치한 해발 757m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000096",
@@ -1246,8 +1151,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1108,
     "address": "경상남도 합천군 가회면ㆍ대병면, 산청군 차황면",
     "shortDescription": "경상남도 경상남도 합천군 가회면ㆍ대병면, 산청군 차황면에 위치한 해발 1,108m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000097",
@@ -1259,8 +1163,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1190,
     "address": "경상남도 함양군 서하면, 안의면, 서상면",
     "shortDescription": "경상남도 경상남도 함양군 서하면, 안의면, 서상면에 위치한 해발 1,190m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000098",
@@ -1272,8 +1175,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1111,
     "address": "경상북도 김천시 대항면",
     "shortDescription": "경상북도 경상북도 김천시 대항면에 위치한 해발 1,111m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000099",
@@ -1285,8 +1187,7 @@ export const mountains: Mountain[] = [
     "elevationMeters": 1077,
     "address": "경상북도 문경시 동로면",
     "shortDescription": "경상북도 경상북도 문경시 동로면에 위치한 해발 1,077m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   },
   {
     "id": "0000000100",
@@ -1298,7 +1199,6 @@ export const mountains: Mountain[] = [
     "elevationMeters": 999,
     "address": "충청북도 괴산군 연풍면, 경상북도 문경시 가은읍",
     "shortDescription": "경상북도 충청북도 괴산군 연풍면, 경상북도 문경시 가은읍에 위치한 해발 999m의 100대 명산입니다.",
-    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다.",
-    "detailStatus": "basic"
+    "selectionReason": "한국등산트레킹지원센터 100대명산 목록정보 서비스에서 제공하는 100대 명산 기본정보입니다."
   }
 ];

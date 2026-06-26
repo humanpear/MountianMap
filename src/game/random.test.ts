@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mountains } from '../data/mountains';
-import { getRandomCandidates, pickRandomMountain } from './random';
+import { getCandidateIdsForRandomMode, getRandomCandidates, pickRandomMountain } from './random';
 
 describe('random mountain selection', () => {
   it('excludes completed mountains in incomplete mode', () => {
@@ -50,5 +50,13 @@ describe('random mountain selection', () => {
     });
 
     expect(result).toBeNull();
+  });
+
+  it('clears manually selected candidates when leaving selected mode', () => {
+    const selectedIds = new Set([mountains[2].id, mountains[4].id]);
+
+    expect([...getCandidateIdsForRandomMode('all', selectedIds)]).toEqual([]);
+    expect([...getCandidateIdsForRandomMode('incomplete', selectedIds)]).toEqual([]);
+    expect([...getCandidateIdsForRandomMode('selected', selectedIds)].sort()).toEqual([...selectedIds].sort());
   });
 });

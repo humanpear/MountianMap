@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const MOUNTAINS_PATH = resolve('src/data/mountains.ts');
-const OUTPUT_PATH = resolve('src/data/generatedMountainGuides.ts');
+const OUTPUT_PATH = resolve('src/data/draftMountainGuides.ts');
 const DEFAULT_LIMIT = 3;
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 
@@ -129,7 +129,7 @@ function parseExistingGuides() {
   }
 
   const content = readFileSync(OUTPUT_PATH, 'utf8');
-  const match = content.match(/const rawGeneratedMountainGuides = ([\s\S]*?);\s*\n/);
+  const match = content.match(/const rawDraftMountainGuides = ([\s\S]*?);\s*\n/);
   if (!match) {
     return {};
   }
@@ -193,8 +193,8 @@ function selectMountains(mountains, options, existingGuides) {
 
 function createSearchLinks(mountain) {
   const queries = [
+    [`숲나들e ${mountain.name} 100대 명산`, '숲나들e 검색'],
     [`${mountain.name} 등산 코스`, '등산코스 검색'],
-    [`${mountain.name} 등산 지도`, '등산지도 검색'],
     [`${mountain.name} 주차장 대중교통`, '주차/교통 검색']
   ];
 
@@ -213,11 +213,15 @@ function buildPrompt(mountain) {
     `고도: ${mountain.elevationMeters}m`,
     '',
     'Google Search로 아래 검색 의도를 확인한 뒤 한국어 JSON만 생성하세요.',
+    `- 숲나들e ${mountain.name} 100대 명산`,
     `- ${mountain.name} 등산 코스`,
-    `- ${mountain.name} 등산 지도`,
     `- ${mountain.name} 주차장 대중교통`,
     '',
     '규칙:',
+    '- 숲나들e는 선정 이유, 산행코스 표 텍스트, 공식 상세 링크, 산 대표 사진 참고 용도로 사용합니다.',
+    '- 숲나들e 코스 지도 이미지는 scripts/scrape-foresttrip-courses.mjs가 별도로 수집하므로 Gemini 초안에서는 생성하지 않습니다.',
+    '- Flash 지도, legacy 지도 파일, 검증되지 않은 트랙 이미지는 사용하지 않습니다.',
+    '- routeTrackUrl, mapPathCoordinates 같은 트랙 필드는 생성하지 않습니다.',
     '- 등산코스는 1~4개만 작성합니다.',
     '- path는 "팔영산 탐방지원센터 -> 능가사 -> 1봉 -> 정상 -> 능가사 -> 팔영산 탐방지원센터" 같은 경유지 순서 문자열로 씁니다.',
     '- 가장 많이 언급되는 것으로 보이는 코스를 rank 1, isRecommended true로 둡니다.',
@@ -496,7 +500,7 @@ function ensureVisitCheckWarning(warnings) {
 function renderGuideFile(guides) {
   const serializedGuides = JSON.stringify(JSON.stringify(guides));
 
-  return `import type { MountainGuide } from '../types';\n\nconst rawGeneratedMountainGuides = ${serializedGuides};\n\nexport const generatedMountainGuides = JSON.parse(rawGeneratedMountainGuides) as Record<string, MountainGuide>;\n`;
+  return `import type { MountainGuide } from '../types';\n\nconst rawDraftMountainGuides = ${serializedGuides};\n\nexport const draftMountainGuides = JSON.parse(rawDraftMountainGuides) as Record<string, MountainGuide>;\n`;
 }
 
 async function main() {

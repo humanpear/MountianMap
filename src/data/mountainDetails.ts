@@ -1,13 +1,22 @@
 import type { Mountain, MountainGuide, MountainGuideLink } from '../types';
-import { generatedMountainGuides } from './generatedMountainGuides';
+import { draftMountainGuides } from './draftMountainGuides';
+import { applyForestTripGuideEnhancement } from './mountainGuideForestTripEnhancements';
+import { mountainGuides } from './mountainGuides';
 
-const mountainGuides: Record<string, MountainGuide> = generatedMountainGuides;
+const activeMountainGuides: Record<string, MountainGuide> = mountainGuides;
+const draftGuides: Record<string, MountainGuide> = draftMountainGuides;
 
 export function getMountainGuide(mountain: Mountain): MountainGuide {
-  const curatedGuide = mountainGuides[mountain.id];
+  const curatedGuide = activeMountainGuides[mountain.id];
 
   if (curatedGuide) {
-    return curatedGuide;
+    return applyForestTripGuideEnhancement(curatedGuide);
+  }
+
+  const draftGuide = draftGuides[mountain.id];
+
+  if (draftGuide) {
+    return applyForestTripGuideEnhancement(draftGuide);
   }
 
   return {

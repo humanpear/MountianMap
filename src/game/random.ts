@@ -25,6 +25,14 @@ export function getRandomCandidates({
   return mountains;
 }
 
+export function getCandidateIdsForRandomMode(mode: RandomMode, selectedIds: Set<string>) {
+  if (mode !== 'selected') {
+    return new Set<string>();
+  }
+
+  return new Set(selectedIds);
+}
+
 export function pickRandomMountain(options: RandomOptions): RandomResult | null {
   const random = options.random ?? Math.random;
   const candidates = getRandomCandidates(options);

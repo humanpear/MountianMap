@@ -9,7 +9,6 @@ export type Mountain = {
   address: string;
   shortDescription: string;
   selectionReason: string;
-  detailStatus: 'basic' | 'enhanced';
 };
 
 export type CompletionRecord = {
@@ -25,10 +24,7 @@ export type MountainGuideConfidence = 'low' | 'medium' | 'high';
 
 export type MountainGuideDifficulty = 'easy' | 'normal' | 'hard' | 'extreme' | 'unknown';
 
-export type MountainGuideCoordinate = {
-  latitude: number;
-  longitude: number;
-};
+export type ForestTripCourseKind = 'recommended' | 'other1' | 'other2' | 'other3';
 
 export type MountainGuideRouteStop = {
   name: string;
@@ -40,9 +36,17 @@ export type MountainGuideRouteStop = {
   longitude?: number;
 };
 
+export type MountainGuideImage = {
+  src: string;
+  alt: string;
+  sourceLabel?: string;
+  sourceUrl?: string;
+};
+
 export type MountainGuideRoute = {
   rank: number;
   isRecommended: boolean;
+  forestTripCourseKind?: ForestTripCourseKind;
   name: string;
   path: string;
   startPoint: string;
@@ -58,10 +62,8 @@ export type MountainGuideRoute = {
   heroImageUrl?: string;
   summary?: string;
   routeStops?: MountainGuideRouteStop[];
-  mapPathCoordinates?: MountainGuideCoordinate[];
   elevationGain?: string;
-  coursePhotos?: MountainGuideLink[];
-  reviewSummary?: string;
+  courseMapImage?: MountainGuideImage;
 };
 
 export type MountainGuideLink = {
@@ -77,8 +79,9 @@ export type MountainGuide = {
   generatedAt?: string;
   confidence?: MountainGuideConfidence;
   selectionReason?: string;
+  heroImage?: MountainGuideImage;
+  courseMapImage?: MountainGuideImage;
   routes: MountainGuideRoute[];
-  courseImageLinks?: MountainGuideLink[];
   photoLinks?: MountainGuideLink[];
   verificationLinks?: MountainGuideLink[];
   notes?: string;

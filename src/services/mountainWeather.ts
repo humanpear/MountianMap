@@ -2,7 +2,7 @@ import { getMountainWeatherStationId } from '../data/mountainWeatherStations';
 import { env } from './env';
 
 const MTWEATHER_ENDPOINT = 'https://mtweather.nifos.go.kr/famous/mountainOne';
-const MTWEATHER_ICON_BASE = 'https://mtweather.nifos.go.kr/FRONT/img/icon/weather/large';
+const MTWEATHER_ICON_BASE = '/weather-icons';
 
 type MountainWeatherApiResponse = {
   famousMTSDTO?: {

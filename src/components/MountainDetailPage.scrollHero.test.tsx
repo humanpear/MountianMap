@@ -43,14 +43,25 @@ describe("MountainDetailPage scroll-reactive hero", () => {
       `section[aria-label="${mountain.name} 상세 정보"]`,
     ) as HTMLElement;
     const header = section.querySelector("header") as HTMLElement;
-    const image = header.querySelector("img") as HTMLImageElement;
+    const heroFrame = header.querySelector(
+      "[data-scroll-hero-frame]",
+    ) as HTMLElement;
+    const heroContent = header.querySelector(
+      "[data-scroll-hero-content]",
+    ) as HTMLElement;
+    const image = heroFrame.querySelector("img") as HTMLImageElement;
 
     expect(section.className).toContain("overflow-auto");
-    expect(header.className).toContain("overflow-hidden");
-    expect(header.className).toContain("items-end");
+    expect(header.className).not.toContain("overflow-hidden");
+    expect(heroFrame.className).toContain("sticky");
+    expect(heroFrame.className).toContain("overflow-hidden");
+    expect(heroFrame.className).toContain("items-end");
+    expect(heroContent.style.transform).toBe("");
     expect(image.className).toContain("w-full");
     expect(image.className).not.toContain("object-contain");
     expect(header.style.height).toBe("675px");
+    expect(heroFrame.style.height).toBe("var(--hero-frame-height)");
+    expect(header.style.getPropertyValue("--hero-frame-height")).toBe("675px");
     expect(header.style.getPropertyValue("--hero-image-brightness")).toBe(
       "1.000",
     );
@@ -62,7 +73,8 @@ describe("MountainDetailPage scroll-reactive hero", () => {
       await new Promise((resolve) => window.setTimeout(resolve, 0));
     });
 
-    expect(header.style.height).toBe("555px");
+    expect(header.style.height).toBe("675px");
+    expect(header.style.getPropertyValue("--hero-frame-height")).toBe("555px");
     expect(header.style.getPropertyValue("--hero-sticky-offset")).toBe(
       "120px",
     );
@@ -77,7 +89,8 @@ describe("MountainDetailPage scroll-reactive hero", () => {
       await new Promise((resolve) => window.setTimeout(resolve, 0));
     });
 
-    expect(header.style.height).toBe("360px");
+    expect(header.style.height).toBe("675px");
+    expect(header.style.getPropertyValue("--hero-frame-height")).toBe("360px");
     expect(header.style.getPropertyValue("--hero-sticky-offset")).toBe(
       "315px",
     );
@@ -93,6 +106,7 @@ describe("MountainDetailPage scroll-reactive hero", () => {
     });
 
     expect(header.style.height).toBe("675px");
+    expect(header.style.getPropertyValue("--hero-frame-height")).toBe("675px");
     expect(header.style.getPropertyValue("--hero-sticky-offset")).toBe("0px");
     expect(header.style.getPropertyValue("--hero-image-brightness")).toBe(
       "1.000",

@@ -9,7 +9,8 @@
     "test": "vitest run",
     "lint": "tsc -b --noEmit",
     "import:mountains": "node scripts/import-top100-mountains.mjs",
-    "generate:guides": "node scripts/generate-mountain-guides.mjs"
+    "generate:guides": "node scripts/generate-mountain-guides.mjs",
+    "audit:guides": "node scripts/audit-mountain-guides.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.87.1",

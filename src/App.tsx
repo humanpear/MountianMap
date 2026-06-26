@@ -1,13 +1,12 @@
 import { type CSSProperties, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { Check, MapPin, Mountain as MountainIcon, Search, Shuffle, X } from 'lucide-react';
-import { GarisanApiProbePage } from './components/GarisanApiProbePage';
+import { Check, LogIn, LogOut, MapPin, Mountain as MountainIcon, Search, Shuffle, X } from 'lucide-react';
 import { MountainDetailPage } from './components/MountainDetailPage';
 import { MountainMap } from './components/MountainMap';
 import { MountainNameWithHanja } from './components/MountainNameWithHanja';
 import { mountains } from './data/mountains';
 import { getMountainGuide } from './data/mountainDetails';
-import { getRandomCandidates, pickRandomMountain } from './game/random';
+import { getCandidateIdsForRandomMode, getRandomCandidates, pickRandomMountain } from './game/random';
 import { cn } from './lib/classNames';
 import { getCompletionErrorMessage } from './services/completionErrors';
 import { isSupabaseConfigured } from './services/env';
@@ -40,19 +39,24 @@ const randomModeLabels: Record<RandomMode, string> = {
 const appClass = {
   shell: 'grid min-h-screen grid-rows-[auto_1fr] bg-[#f4f7f5] text-[#18221d]',
   topbar:
-    'z-[4] flex h-[60px] items-center justify-between gap-4 bg-mountain-navy px-5 py-3 text-white max-[900px]:h-auto max-[900px]:flex-col max-[900px]:items-stretch max-[900px]:px-4',
+    'z-[4] bg-[#00172b] text-white',
+  topbarInner:
+    'mx-auto grid h-[68px] w-[1180px] max-w-[calc(100%-60px)] grid-cols-[minmax(230px,auto)_minmax(260px,420px)_auto] items-center justify-between gap-4 max-[900px]:h-auto max-[900px]:max-w-none max-[900px]:grid-cols-1 max-[900px]:gap-3 max-[900px]:px-4 max-[900px]:py-3',
   brand:
-    'inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent text-xl font-black text-white max-[900px]:justify-start [&_svg]:text-white',
+    'inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent text-[20px] font-black text-white max-[900px]:justify-start [&_svg]:text-white',
   search:
     'grid min-h-9 w-[252px] grid-cols-[minmax(0,1fr)_40px] overflow-hidden rounded-[9px] bg-white max-[900px]:w-full',
   searchInput: 'min-w-0 border-0 px-3 text-[13px] text-[#18221d] outline-none placeholder:text-[#627168]',
   searchButton: 'inline-flex cursor-pointer items-center justify-center border-0 bg-white text-[#00172b]',
-  workspace: 'relative grid min-h-[calc(100vh-60px)] grid-cols-[minmax(0,1fr)_360px] max-[900px]:grid-cols-1',
-  mapStage: 'relative min-h-[calc(100vh-60px)] overflow-visible',
+  authButton:
+    'inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/30 bg-white/10 px-3.5 text-sm font-extrabold text-white transition hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-55 max-[900px]:w-full',
+  workspace: 'relative grid min-h-[calc(100vh-68px)] grid-cols-[minmax(0,1fr)_360px] max-[900px]:grid-cols-1',
+  mapStage: 'relative min-h-[calc(100vh-68px)] overflow-visible',
   filterBar:
     'absolute left-5 top-5 z-[2] flex gap-1.5 rounded-[10px] border border-[#d8e0da] bg-white/95 p-1.5 shadow-[0_16px_50px_rgba(24,34,29,0.14)]',
   filterButton:
-    'inline-flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d8e0da] bg-transparent px-3 text-[#627168]',
+    'inline-flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 font-bold',
+  filterButtonIdle: 'border-[#d8e0da] bg-transparent text-[#627168]',
   filterButtonActive: 'border-[#2f6b4f] bg-[#2f6b4f] text-white',
   randomControl:
     'absolute bottom-[22px] left-1/2 z-[2] flex -translate-x-1/2 items-center gap-2.5 rounded-xl border border-[#d8e0da] bg-white/95 p-2 shadow-[0_16px_50px_rgba(24,34,29,0.14)]',
@@ -64,7 +68,8 @@ const appClass = {
   detailHeader: 'flex items-start justify-between gap-4',
   eyebrow: 'm-0 mb-[3px] text-xs font-bold leading-4 text-[#627168]',
   completeButton:
-    'inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d8e0da] bg-white px-3 font-extrabold text-[#18221d]',
+    'inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 font-extrabold',
+  completeButtonIdle: 'border-[#d8e0da] bg-white text-[#18221d]',
   completeButtonActive: 'border-[#1f8a5b] bg-[#1f8a5b] text-white',
   meta:
     'my-5 grid gap-3 rounded-lg border border-[#d8e0da] bg-[#f7faf8] p-4 [&_dd]:m-0 [&_dd]:font-bold [&_dt]:text-xs [&_dt]:font-black [&_dt]:text-[#627168]',
@@ -100,7 +105,6 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [selectedMountainId, setSelectedMountainId] = useState(mountains[0]?.id ?? '');
   const [detailMountainId, setDetailMountainId] = useState<string | null>(null);
-  const [isApiProbeOpen, setIsApiProbeOpen] = useState(false);
   const [focusedMountainId, setFocusedMountainId] = useState<string | undefined>();
   const [completionRecords, setCompletionRecords] = useState<CompletionRecord[]>([]);
   const [randomMode, setRandomMode] = useState<RandomMode>('incomplete');
@@ -214,6 +218,11 @@ export default function App() {
     });
   };
 
+  const changeRandomMode = (mode: RandomMode) => {
+    setRandomMode(mode);
+    setCandidateIds((ids) => getCandidateIdsForRandomMode(mode, ids));
+  };
+
   const selectMountain = (mountain: Mountain) => {
     setSelectedMountainId(mountain.id);
     setResultModalMountain(null);
@@ -223,7 +232,6 @@ export default function App() {
   };
 
   const openMountainDetail = (mountain: Mountain) => {
-    setIsApiProbeOpen(false);
     setDetailMountainId(mountain.id);
     setResultModalMountain(null);
   };
@@ -243,7 +251,6 @@ export default function App() {
       return;
     }
 
-    setIsApiProbeOpen(false);
     setSelectedMountainId(match.id);
     setFocusedMountainId(match.id);
     setDetailMountainId(match.id);
@@ -251,10 +258,47 @@ export default function App() {
   };
 
   const showMountainOnMap = (mountain: Mountain) => {
-    setIsApiProbeOpen(false);
     setDetailMountainId(null);
     setSelectedMountainId(mountain.id);
     setFocusedMountainId(mountain.id);
+  };
+
+  const signInWithGoogle = async () => {
+    if (!supabase) {
+      setMessage('Google 로그인을 사용하려면 Supabase 설정이 필요합니다.');
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+
+    if (error) {
+      setMessage(error.message);
+    }
+  };
+
+  const signOut = async () => {
+    if (!supabase) {
+      return;
+    }
+
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      setMessage(error.message);
+    }
+  };
+
+  const handleAuthClick = () => {
+    if (session) {
+      void signOut();
+      return;
+    }
+
+    void signInWithGoogle();
   };
 
   const runRandomPick = () => {
@@ -315,44 +359,48 @@ export default function App() {
   return (
     <main className={appClass.shell}>
       <header className={appClass.topbar}>
-        <button className={appClass.brand} type="button" onClick={() => setDetailMountainId(null)} aria-label="지도로 이동">
-          <img className="h-9 w-auto object-contain brightness-0 invert" src="/logo-mountain.png" alt="" aria-hidden="true" />
-          <span>대한민국 100대 명산</span>
-        </button>
-        <form
-          className={appClass.search}
-          role="search"
-          onSubmit={(event) => {
-            event.preventDefault();
-            submitMountainSearch();
-          }}
-        >
-          <label className="sr-only" htmlFor="mountain-search-input">
-            산 이름 검색
-          </label>
-          <input
-            className={appClass.searchInput}
-            id="mountain-search-input"
-            list="mountain-search-options"
-            type="search"
-            placeholder="산 이름을 검색하세요"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-          />
-          <datalist id="mountain-search-options">
-            {mountains.map((mountain) => (
-              <option key={mountain.id} value={mountain.name} />
-            ))}
-          </datalist>
-          <button className={appClass.searchButton} type="submit" aria-label="산 검색">
-            <Search size={22} />
+        <div className={appClass.topbarInner}>
+          <button className={appClass.brand} type="button" onClick={() => setDetailMountainId(null)} aria-label="지도로 이동">
+            <img className="h-9 w-auto object-contain brightness-0 invert" src="/logo-mountain.png" alt="" aria-hidden="true" />
+            <span>대한민국 100대 명산</span>
           </button>
-        </form>
+          <form
+            className={appClass.search}
+            role="search"
+            onSubmit={(event) => {
+              event.preventDefault();
+              submitMountainSearch();
+            }}
+          >
+            <label className="sr-only" htmlFor="mountain-search-input">
+              산 이름 검색
+            </label>
+            <input
+              className={appClass.searchInput}
+              id="mountain-search-input"
+              list="mountain-search-options"
+              type="search"
+              placeholder="산 이름을 검색하세요"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+            <datalist id="mountain-search-options">
+              {mountains.map((mountain) => (
+                <option key={mountain.id} value={mountain.name} />
+              ))}
+            </datalist>
+            <button className={appClass.searchButton} type="submit" aria-label="산 검색">
+              <Search size={22} />
+            </button>
+          </form>
+          <button className={appClass.authButton} type="button" onClick={handleAuthClick}>
+            {session ? <LogOut size={17} /> : <LogIn size={17} />}
+            {session ? '로그아웃' : '로그인'}
+          </button>
+        </div>
       </header>
 
-      {isApiProbeOpen ? (
-        <GarisanApiProbePage onBack={() => setIsApiProbeOpen(false)} />
-      ) : detailMountain ? (
+      {detailMountain ? (
         <MountainDetailPage
           mountain={detailMountain}
           isCompleted={completedIds.has(detailMountain.id)}
@@ -381,8 +429,11 @@ export default function App() {
                 <button
                   key={mode}
                   type="button"
-                  className={cn(appClass.filterButton, mode === randomMode && appClass.filterButtonActive)}
-                  onClick={() => setRandomMode(mode)}
+                  className={cn(
+                    appClass.filterButton,
+                    mode === randomMode ? appClass.filterButtonActive : appClass.filterButtonIdle
+                  )}
+                  onClick={() => changeRandomMode(mode)}
                 >
                   {randomModeLabels[mode]}
                 </button>
@@ -426,7 +477,10 @@ export default function App() {
                     </h2>
                   </div>
                   <button
-                    className={cn(appClass.completeButton, completedIds.has(selectedMountain.id) && appClass.completeButtonActive)}
+                    className={cn(
+                      appClass.completeButton,
+                      completedIds.has(selectedMountain.id) ? appClass.completeButtonActive : appClass.completeButtonIdle
+                    )}
                     type="button"
                     onClick={() => toggleCompleted(selectedMountain)}
                     aria-label={`${selectedMountain.name} 등반 완료 표시`}

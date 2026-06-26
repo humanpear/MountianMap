@@ -34,6 +34,7 @@ declare global {
   type KakaoMap = {
     setCenter(position: KakaoLatLng): void;
     setLevel(level: number, options?: KakaoMapSetLevelOptions): void;
+    setBounds(bounds: KakaoLatLngBounds): void;
     getLevel(): number;
     setZoomable(zoomable: boolean): void;
     addControl(control: KakaoZoomControl, position: KakaoControlPosition): void;
